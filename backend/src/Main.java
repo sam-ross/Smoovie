@@ -10,32 +10,113 @@ import java.util.regex.Pattern;
 import static java.lang.String.format;
 
 public class Main {
-    private static final String BASE_URL = "https://api.opensubtitles.com/api/v1";
+    private static final String OPEN_SUBTITLES_BASE_URL = "https://api.opensubtitles.com/api/v1";
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        final String apiKey = "<API-KEY>";
-        final String bearerToken = "<BEARER TOKEN>";
-        final String imdbId = "0361748";
+        final String apiKeyImdb = "XXX";
+        final String movieNameInput = "lock stock";
+
+        final String apiKey = "XXX";
+        final String username = "XXX";
+        final String password = "XXX";
+
+        String imdbId = searchIMDbMovie(apiKeyImdb, movieNameInput);
+
+        final String bearerToken = openSubtitlesLogIn(apiKey, username, password);
+        System.out.println(bearerToken);
 
         int fileId = getFileId(apiKey, imdbId);
         System.out.println(fileId);
 
-        String downloadLink = getDownloadLink(apiKey, fileId, bearerToken);
+//        String downloadLink = getDownloadLink(apiKey, fileId, bearerToken);
+        String downloadLink = getDownloadLink(apiKey, fileId);    // new
+
         System.out.println(downloadLink);
 
         String subtitles = useDownloadLink(downloadLink);
         System.out.println(subtitles);
-
-//        BufferedWriter writer = new BufferedWriter(new FileWriter("./test7.srt"));
-//        writer.write(subtitles);
 //
-//        writer.close();
-
-//        Movie movie = new Movie();
-//        movie.setSubtitle();
+//        BufferedWriter writer = new BufferedWriter(new FileWriter("./test9.srt"));    //
+//        writer.write(subtitles);  //
 //
-//        String subtitlesText = extractTextFromSubtitles(movie.getSubtitle());
+//        writer.close();   //
+
+//        Movie movie = new Movie("", "", "", "", "");    //
+//        movie.setSubtitle();  //
+//
+//        String subtitlesText = extractTextFromSubtitles(movie.getSubtitle()); //
+
         String subtitlesText = extractTextFromSubtitles(subtitles);
+    }
+
+    private static String openSubtitlesLogIn(String apiKey, String username, String password) throws IOException,
+            InterruptedException {
+        String requestBody = format("{\"password\": \"%s\", \"username\": \"%s\"}", password, username);
+
+        HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(OPEN_SUBTITLES_BASE_URL + "/login"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Api-Key", apiKey)
+                .header("Content-type", "application/json")
+                .header("Accept", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            System.out.println(format("Unexpected status code: %d", response.statusCode()));
+        }
+
+        String responseBody = response.body();
+        System.out.println(response.statusCode());
+
+        System.out.println(responseBody);
+
+        int pos = responseBody.indexOf(",\"token\":\"");
+        int startOfId = pos + 10;
+        int endOfId = responseBody.indexOf('\"', startOfId);
+
+        String bearerToken = responseBody.substring(startOfId, endOfId);
+
+        return bearerToken;
+    }
+
+    private static String searchIMDbMovie(
+            String apiKeyImdb,
+            String movieNameInput
+    ) throws IOException, InterruptedException {
+        String convertedMovieName = movieNameInput.replace(" ", "%20");
+        HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(format("https://imdb-api.com/en/API/SearchMovie/%s/%s", apiKeyImdb, convertedMovieName)))
+                .build();
+
+        HttpResponse<String> response = client.send(
+                request,
+                HttpResponse.BodyHandlers.ofString()
+        );
+
+        if (response.statusCode() != 200) {
+            System.out.println(format("Unexpected status code: %d", response.statusCode()));
+        }
+
+        String responseBody = response.body();
+
+        System.out.println(responseBody);
+
+        int pos = responseBody.indexOf("[{\"id\":\"tt");
+        int startOfId = pos + 10;
+        int endOfId = responseBody.indexOf('\"', startOfId);
+//        System.out.println(responseBody.charAt(pos + 10));
+
+        String imdbId = responseBody.substring(startOfId, endOfId);
+
+        return imdbId;
+
     }
 
     private static String extractTextFromSubtitles(String subtitles) throws IOException {
@@ -73,7 +154,7 @@ public class Main {
         fullSubtitles = fullSubtitles.replaceAll("\\<.*?\\>|\\[.*?\\]|\\{.*?\\}|\\(.*?\\)", "");
         fullSubtitles = fullSubtitles.replace("―", " ").replace("–", " ").replace("-", " ");
 
-        List<String> charactersToRemove = List.of("\"", "“", "”", ",", ".", "…", "♪", ":", ";", "?", "!");
+        List<String> charactersToRemove = List.of("\"", "“", "”", ",", ".", "…", "♪", ":", ";", "?", "!", "[", "]", "(", ")", "<", ">", "{", "}");
         for (String ch: charactersToRemove) {
             fullSubtitles = fullSubtitles.replace(ch, "");
         }
@@ -105,7 +186,7 @@ public class Main {
         }
         System.out.println(hm.entrySet());
 
-        hm = sortByValue(hm);
+        hm = sortByValue(hm, false);
 
         System.out.println(hm.entrySet());
         System.out.println(hm.size());
@@ -124,18 +205,12 @@ public class Main {
         System.out.println();
 
         // phrases
-        int phraseLength = 10;
+        int phraseLength = 3;
         HashMap<String, Integer> phr = new HashMap<>();
         int numberOfDuplicates = 0;
 
         // O(N) improved version
         for (int i = 0; i < words.size() - (phraseLength - 1); i++) {
-//            String phrase = words.get(i);
-//
-//            for (int j = 1; j < phraseLength; j++) {
-//                phrase += format(" %s", words.get(i + j));
-//            }
-
             String phrase = String.join(" ", words.subList(i, i + phraseLength));   // indexTo is exclusive
 
             int value = 1;
@@ -145,20 +220,45 @@ public class Main {
             }
             phr.put(phrase, value);
         }
-//        System.out.println(phr.entrySet());
 
         if (numberOfDuplicates == 0) System.out.println("There were no common phrases for this size of phrase");
 
-        phr = sortByValue(phr);
+        phr = sortByValue(phr, true);
 
         System.out.println(phr.values());
         System.out.println(phr.entrySet());
         System.out.println(phr.size());
 
-//        BufferedWriter writer = new BufferedWriter(new FileWriter("./disbelief.txt"));
-//        writer.write(phr.entrySet().toString());
-//
-//        writer.close();
+        // swear words
+        List<String> swearWords = swearWords();
+        List<String> easilyMistakenSwearWords = explicityDefinedSwearWords();   // these are swear words which could get mistaken for other words if using the contains method
+        HashMap<String, Integer> swr = new HashMap<>();
+
+        for (String key : hm.keySet()) {
+            boolean foundSwearWord = false;
+            for (String swearWord: swearWords) {
+                if (key.contains(swearWord)) {
+                    if (swr.get(swearWord) != null) {
+                        swr.put(swearWord, swr.get(swearWord) + hm.get(key));
+                    } else {
+                        swr.put(swearWord, hm.get(key));
+                    }
+                    foundSwearWord = true;
+                    break;
+                }
+            }
+            if (!foundSwearWord && easilyMistakenSwearWords.contains(key)) {
+                int existingValue = 0;
+                if (swr.get(key) != null) {
+                    existingValue = swr.get(key);
+                }
+                swr.put(key, existingValue + hm.get(key));
+            }
+        }
+
+        swr = sortByValue(swr, false);
+
+        System.out.println(swr.entrySet());
 
         return "";
     }
@@ -183,16 +283,16 @@ public class Main {
 
     private static String getDownloadLink(
             String apiKey,
-            int fileId,
-            String bearerToken
+            int fileId
+//            String bearerToken
     ) throws IOException, InterruptedException {
         String requestBody = format("{\"file_id\": %d}", fileId);
 
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.opensubtitles.com/api/v1/download"))
+                .uri(URI.create(OPEN_SUBTITLES_BASE_URL + "/download"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .header("Authorization", format("Bearer %s", bearerToken))
+//                .header("Authorization", format("Bearer %s", bearerToken))
                 .header("Api-Key", apiKey)
                 .header("Content-type", "application/json")
                 .header("Accept", "application/json")
@@ -221,11 +321,11 @@ public class Main {
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Api-Key", apiKey)
-                .uri(URI.create(format("https://api.opensubtitles.com/api/v1/subtitles?imdb_id=%s", imdbId)))
+                .uri(URI.create(OPEN_SUBTITLES_BASE_URL + "/subtitles?languages=en&imdb_id=" + imdbId))
                 .header("Accept", "application/json")
                 .build();
 
-        HttpResponse<String> response = client .send(
+        HttpResponse<String> response = client.send(
                 request,
                 HttpResponse.BodyHandlers.ofString()
         );
@@ -235,6 +335,8 @@ public class Main {
         }
 
         String responseBody = response.body();
+
+        // need to check that a movie is definitely returned from imdb
 
         int pos = responseBody.indexOf("\"files\":[{\"file_id\":");
         int startOfId = pos + 20;
@@ -252,7 +354,7 @@ public class Main {
     }
 
     // method to sort hashmap by values
-    private static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
+    private static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm, boolean removeSingulars)
     {
         // Create a list from elements of HashMap
         List<Map.Entry<String, Integer> > list
@@ -269,10 +371,74 @@ public class Main {
                 = new LinkedHashMap<>();
         for (int i = list.size() - 1; i >= 0; i--) {
             Map.Entry<String, Integer> aa = list.get(i);
+            if (removeSingulars) {
+                if (aa.getValue() == 1) continue;
+            }
             temp.put(aa.getKey(), aa.getValue());
         }
         return temp;
     }
 
+    private static List<String> swearWords() {
+        return List.of(
+                "arsehole",
+                "bastard",
+                "ballsack",
+                "bellend",
+                "bitch",
+                "blowjob",
+                "bollock",
+                "boner",
+                "boob",
+                "bugger",
+                "cocksucker",
+                "cunt",
+                "dildo",
+                "dyke",
+                "goddamn",
+                "fanny",
+                "fuck",
+                "fudgepacker",
+                "knobend",
+                "nigg",
+                "penis",
+                "pussy",
+                "shit",
+                "tosser",
+                "wanker",
+                "whore"
+        );
+    }
 
+    private static List<String> explicityDefinedSwearWords() {
+        return List.of(
+                "arse",
+                "ass",
+                "bloody",
+                "bum",
+                "butt",
+                "buttplug",
+                "cock",
+                "coon",
+                "crap",
+                "dick",
+                "dickhead",
+                "fag",
+                "faggot",
+                "hell",
+                "ho",
+                "hoe",
+                "homo",
+                "piss",
+                "poop",
+                "prick",
+                "queer",
+                "sex",
+                "slut",
+                "vagina",
+                "wank",
+                "tit",
+                "tits"
+        );
+    }
 }
