@@ -1,4 +1,4 @@
-package com.sam.ross.smoovie.objects.Subtitles;
+package com.sam.ross.smoovie.objects.subtitles;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
