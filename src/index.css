@@ -1,0 +1,199 @@
+html, 
+body {
+  margin: 0;
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  font: 30px "Century Gothic", Futura, sans-serif;
+
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,
+  Arial, sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+h1 {
+  font-weight: 200;
+  font-size: 4rem;
+}
+
+h2 {
+  font-weight: 200;
+  font-size: 3rem;
+}
+
+#root {
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+  font-size: 16px;
+}
+
+.container {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-form {
+  background-color: #adc1cab6;
+  padding: 50px;
+
+}
+
+.section-movie-list {
+  background-color: rgba(205, 205, 205, 0.24);
+  padding: 50px;
+}
+
+.section-words-list {
+  background-color: rgba(230, 230, 230, 0.24);
+  padding: 50px;
+}
+
+.section-words-frequency {
+  background-color: rgba(255, 255, 255, 0.24);
+  padding: 50px;
+}
+
+.section-words-lengths {
+  background-color: rgba(205, 205, 205, 0.24);
+  padding: 50px;
+}
+
+.section-phrase-frequency {
+  background-color: rgba(230, 230, 230, 0.24);
+  padding: 50px;
+}
+
+.section-words-swear {
+  background-color: rgba(255, 255, 255, 0.24);
+  padding: 50px;
+}
+
+.section-words-swear-time {
+  background-color: rgba(205, 205, 205, 0.24);
+  padding: 50px;
+}
+
+input {
+  width:100%;
+  border:2px solid rgb(193, 193, 193);
+  outline: none;
+  border-radius: 4px;
+  font-size: 30px;
+  font-weight: 200;
+  padding:12px;
+  transition:0.3s;
+}
+
+input:focus {
+  border-color: dodgerblue;
+  box-shadow: 0 0 8px 0 dodgerblue;
+}
+
+/* CSS */
+.button-nice {
+  background-color: rgba(51, 51, 51, 0.05);
+  border-radius: 8px;
+  border-width: 0;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 12px;
+  text-align: center;
+  transition: all 200ms;
+  vertical-align: baseline;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-bottom: 5px;
+}
+
+ol, ul {
+  /* padding-left: 30px; */
+  list-style-type: none;
+}
+
+.list-movies {
+  display: flex;
+  justify-content:space-evenly;
+}
+
+.list-item-movies {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(100, 179, 221, 0.485);
+  width: 220px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+img {
+  width: 200px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.image-movies:hover{
+  filter: brightness(80%)
+}
+
+.word-frequency-list-container {
+  width: 150px;
+  /* float: right; */
+  padding: 0px;
+}
+
+.word-frequency-li {
+  background-color:rgba(194, 221, 173, 0.473);
+  display: flex;
+  justify-content: space-between;
+}
+
+.phrase-frequency-list-container {
+  padding: 0px;
+}
+
+/* .image-container {
+  overflow: hidden;
+  width: 200px;
+  height: auto;
+  margin: 10px;
+}
+
+.image-container img {
+  transition: transform .5s ease;
+}
+
+.image-container:hover img {
+  transform: scale(1.1);
+  filter: brightness(80%);
+
+} */
+
