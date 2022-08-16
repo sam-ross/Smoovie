@@ -13,6 +13,7 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class WordData {
     private HashMap<String, Integer> wordFrequencies;
+    private HashMap<String, Integer> wordFrequenciesWithCommonWords;
     private HashMap<String, Integer> wordLengths;
     private HashMap<String, Integer> phraseFrequencies;
     private HashMap<String, Integer> swearWordFrequencies;

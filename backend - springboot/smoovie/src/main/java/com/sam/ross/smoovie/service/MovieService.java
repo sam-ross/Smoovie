@@ -145,6 +145,7 @@ public class MovieService {
     // Data time
     public WordData getWordData(List<String> words, int phraseLength, int numberOfSections) {
         HashMap<String, Integer> wordFrequencies = getWordFrequencies(words, true);
+        HashMap<String, Integer> wordFrequenciesWithCommonWords = getWordFrequencies(words, false);
         HashMap<String, Integer> wordLengths = getWordLengths(words);
         HashMap<String, Integer> phraseFrequencies = getPhraseFrequencies(words, phraseLength);
         HashMap<String, Integer> swearWordFrequencies = getSwearWordFrequencies(words);
@@ -152,6 +153,7 @@ public class MovieService {
 
         return WordData.builder()
                 .wordFrequencies(wordFrequencies)
+                .wordFrequenciesWithCommonWords(wordFrequenciesWithCommonWords)
                 .wordLengths(wordLengths)
                 .phraseFrequencies(phraseFrequencies)
                 .swearWordFrequencies(swearWordFrequencies)

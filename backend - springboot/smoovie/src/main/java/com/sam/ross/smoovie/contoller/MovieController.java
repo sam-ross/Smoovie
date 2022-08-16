@@ -5,7 +5,6 @@ import com.sam.ross.smoovie.objects.IMDbMovieList;
 import com.sam.ross.smoovie.objects.words.WordData;
 import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.service.MovieService;
-import com.sam.ross.smoovie.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +31,12 @@ public class MovieController {
     @GetMapping("/imdb/search/{title}")
     public ResponseEntity<IMDbMovieList> searchIMDbMovies(@PathVariable String title) throws IOException,
             InterruptedException {
-//        List<IMDbMovie> movies = service.searchIMDbMovies(title, apiKeyImdb);
-//        if (movies.size() > 5) {
-//            movies = movies.subList(0, 5);
-//        }
+        List<IMDbMovie> movies = service.searchIMDbMovies(title, apiKeyImdb);
+        if (movies.size() > 5) {
+            movies = movies.subList(0, 5);
+        }
 
-        List<IMDbMovie> movies = Utils.getVanillaMovies(title);
+//        List<IMDbMovie> movies = Utils.getVanillaMovies(title);
 
         return ResponseEntity.ok(IMDbMovieList.builder().movies(movies).build());
     }
@@ -45,24 +44,24 @@ public class MovieController {
     @CrossOrigin
     @GetMapping("/words/{imdbId}")
     public ResponseEntity<WordList> getWordList(@PathVariable String imdbId) throws IOException, InterruptedException {
-//        WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles);
+        WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles);
 
-//        WordList words = WordList.builder().words(List.of("hello", "sam", "this", "is", "a", "test", "imdbId", imdbId)).build();
-        WordList words = WordList.builder().words(Utils.getVanillaWords()).build();
+//        WordList words = WordList.builder().words(Utils.getVanillaWords()).build();
 
         return ResponseEntity.ok(words);
     }
 
     @CrossOrigin
     @PostMapping("/words/data")
-//    public ResponseEntity<HashMap<String, Integer>> getWordFrequencies(@RequestBody WordList wordList) {
-    public ResponseEntity<WordData> getWordData(@RequestBody List<String> words, @RequestParam(defaultValue = "3") int phraseLength, @RequestParam(defaultValue = "5") int numberOfSections) {
+    public ResponseEntity<WordData> getWordData(@RequestBody List<String> words, @RequestParam(defaultValue = "3") int phraseLength, @RequestParam(defaultValue = "20") int numberOfSections) {
         WordData wordData = service.getWordData(words, phraseLength, numberOfSections);
 
         System.out.println(wordData.getWordFrequencies());
+        System.out.println(wordData.getWordFrequenciesWithCommonWords());
         System.out.println(wordData.getWordLengths());
         System.out.println(wordData.getPhraseFrequencies());
         System.out.println(wordData.getSwearWordFrequencies());
+        System.out.println(wordData.getSwearWordFrequenciesOverTime());
 
         return ResponseEntity.ok(wordData);
     }
