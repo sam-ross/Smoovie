@@ -184,6 +184,7 @@ class MainWrapper extends React.Component {
             error={this.state.wordDataError}
             isLoaded={this.state.wordDataIsLoaded}
             words={this.state.wordData.wordFrequencies}
+            wordsAll={this.state.wordData.wordFrequenciesWithCommonWords}
           />
         </div>
 
@@ -197,7 +198,7 @@ class MainWrapper extends React.Component {
         </div>
 
         <div className='section-phrase-frequency'>
-          <h2>Phrase Frequencies3</h2>
+          <h2>Phrase Frequencies</h2>
           <PhraseFrequencies
             error={this.state.wordDataError}
             isLoaded={this.state.wordDataIsLoaded}
@@ -215,7 +216,7 @@ class MainWrapper extends React.Component {
         </div>
 
         <div className='section-words-swear-time'>
-          <h2>Swear Word Frequencies Over Time</h2>
+          <h2>Swear Word Frequencies Throughout the Movie</h2>
           <SwearWordFrequenciesOverTime
             error={this.state.wordDataError}
             isLoaded={this.state.wordDataIsLoaded}

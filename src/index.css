@@ -53,6 +53,10 @@ h2 {
 
 .section-movie-list {
   background-color: rgba(205, 205, 205, 0.24);
+
+  /* background-color: rgb(58, 163, 255);
+  background-color: rgb(255, 66, 66); */
+
   padding: 50px;
 }
 
@@ -196,4 +200,24 @@ img {
   filter: brightness(80%);
 
 } */
+
+.chart {
+  width: 700px;
+}
+
+.chart-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-word-frequencies {
+  /* width: 500px; */
+  height: 1100px;
+}
+
+.chart-phrase-frequencies {
+  /* width: 500px; */
+  height: 1200px;
+}
 
