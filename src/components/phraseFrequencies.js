@@ -1,21 +1,25 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 class PhraseFrequencies extends React.Component {
   render() {
     const error = this.props.error;
     const isLoaded = this.props.isLoaded;
-    const phraseFrequencies = this.props.phraseFrequencies;
+    const phraseFrequencyRanges = this.props.phraseFrequencyRanges;
 
     if (error) {
       return <div> Error: {error.message}</div>
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      // return <div>Loading...</div>
     } else {
-      console.log(phraseFrequencies);
+      console.log(phraseFrequencyRanges);
 
-      let entries = Object.entries(phraseFrequencies).slice(0, 50);
+      const sliderCurrentValue = this.props.sliderCurrentValue;
+
+      let entries = Object.entries(phraseFrequencyRanges[sliderCurrentValue - 2].phraseFrequencyRange).slice(0, 50);
       let labels = entries.map((entry) => entry[0]);
       let values = entries.map((entry) => entry[1]);
 
@@ -75,8 +79,21 @@ class PhraseFrequencies extends React.Component {
 
       return (
 
-        <div className="chart-phrase-frequencies">
-          <Bar data={chartData} options={options} />
+        <div className='section-phrase-frequency'>
+          <h2>Phrase Frequencies</h2>
+          <div className='slider-div'>
+            <span className="slider-title">Length of phrase</span>
+            <Slider
+              marks={[2, 3, 4, 5, 6, 7, 8]}
+              min={0}
+              max={6}
+              defaultValue={1}
+              onChange={this.props.onChange}
+            />
+          </div>
+          <div className="chart-phrase-frequencies">
+            <Bar data={chartData} options={options} />
+          </div>
         </div>
       )
 

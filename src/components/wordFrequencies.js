@@ -1,6 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
+import Toggle from 'react-toggle'
 
 class WordFrequencies extends React.Component {
 
@@ -14,17 +15,23 @@ class WordFrequencies extends React.Component {
   render() {
     const error = this.props.error;
     const isLoaded = this.props.isLoaded;
-    const words = this.props.words;
-    const wordsAll = this.props.wordsAll;
+    const commonRemoved = this.props.commonRemoved;
+    let wordsChosen;
 
     if (error) {
       return <div> Error: {error.message}</div>
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      // return <div>Loading...</div>
     } else {
-      console.log(words);
+      if (commonRemoved) {
+        wordsChosen = this.props.words;
+      } else {
+        wordsChosen = this.props.wordsAll;
+      }
 
-      let entries = Object.entries(words).sort((a, b) => b[1] - a[1]).slice(0, 50);
+      console.log(wordsChosen);
+
+      let entries = Object.entries(wordsChosen).sort((a, b) => b[1] - a[1]).slice(0, 50);
       let labels = entries.map((entry) => entry[0]);
       let values = entries.map((entry) => entry[1]);
 
@@ -84,7 +91,27 @@ class WordFrequencies extends React.Component {
 
 
       return (
-        <div>
+        <div className='section-words-frequency'>
+          <div className='words-frequency-header'>
+            <h2>Word Frequencies</h2>
+            <div className='word-count-outer'>
+              Total word count:
+              <div className="word-count">
+                {this.props.wordCount}
+              </div>
+            </div>
+          </div>
+
+          <div className='word-frequency-common-words'>
+            <label className="word-frequency-label-items">
+              <span className='common-words-included'>Common Words Removed</span>
+              <Toggle
+                defaultChecked={this.props.defaultChecked}
+                icons={this.props.icons}
+                onChange={this.props.onChange} />
+            </label>
+          </div>
+
           <div className="chart-word-frequencies">
             <Bar data={chartData} options={options} />
           </div>

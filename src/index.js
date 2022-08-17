@@ -10,12 +10,15 @@ import PhraseFrequencies from './components/phraseFrequencies';
 import SwearWordFrequencies from './components/swearWordFrequencies';
 import SwearWordFrequenciesOverTime from './components/swearWordFrequenciesOverTime';
 
+
+
 class MainWrapper extends React.Component {
   constructor() {
     super();
     this.state = {
       value: '',
       submitted: false,
+      wordCount: null,
 
       movieListError: null,
       movieListIsLoaded: false,
@@ -31,7 +34,10 @@ class MainWrapper extends React.Component {
 
       wordDataError: null,
       wordDataIsLoaded: false,
-      wordData: {}
+      wordData: {},
+
+      commonRemoved: true,
+      sliderCurrentValue: 3
     };
   }
 
@@ -43,23 +49,43 @@ class MainWrapper extends React.Component {
   }
 
   handleSubmit(e) {
-    alert('A movie name was submitted: ' + this.state.value);
-    e.preventDefault();
-    this.setState({ submitted: !this.state.submitted });
+    if (this.state.value === "") {
+      alert("Movie title can't be empty!");
+      e.preventDefault();
+    } else {
+      console.log("value:" + this.state.value)
+      e.preventDefault();
+      this.setState({ submitted: !this.state.submitted });
+    }
   }
 
   handleImageClick(e) {
-    // e.preventDefault();
     console.log(e.target.alt);
     console.log(this.state.value);
-    // this.setState({ curImdbId: imdbId })
-    // this.getWordList(e.target.alt);
 
     e.preventDefault();
     this.setState({
       imdbId: e.target.alt,
       movieClicked: !this.state.movieClicked
     });
+  }
+
+  setWordCount(count) {
+    console.log(count);
+    this.setState({
+      wordCount: count
+    })
+  }
+
+  handleToggleChange() {
+    console.log("Toggle changed from: " + this.state.commonRemoved + " to " + !this.state.commonRemoved);
+    this.setState({ commonRemoved: !this.state.commonRemoved });
+  }
+
+  handleSliderChange(e) {
+    let newPosition = e + 2;
+    console.log("Moving slider from :" + this.state.sliderCurrentValue + " to " + newPosition);
+    this.setState({ sliderCurrentValue: newPosition });
   }
 
   getMovieList() {
@@ -71,7 +97,8 @@ class MainWrapper extends React.Component {
         (result) => {
           this.setState({
             movieListIsLoaded: true,
-            movieListMovies: result.movies
+            movieListMovies: result.movies,
+            movieListError: null
           });
         },
         (error) => {
@@ -95,9 +122,11 @@ class MainWrapper extends React.Component {
             wordListIsLoaded: true,
             wordListWords: result.words,
             wordsRetrieved: !this.state.wordsRetrieved,
+            wordListError: null,
           });
         },
         (error) => {
+          console.log(error);
           this.setState({
             wordListIsLoaded: true,
             wordListError: error,
@@ -125,7 +154,8 @@ class MainWrapper extends React.Component {
           console.log(result);
           this.setState({
             wordDataIsLoaded: true,
-            wordData: result
+            wordData: result,
+            wordDataError: null
           });
         },
         (error) => {
@@ -142,87 +172,86 @@ class MainWrapper extends React.Component {
     return (
 
       <div>
-        <div className='section-form'>
-          <MovieForm
-            value={this.state.value}
-            handleChange={(e) => this.handleChange(e)}
-            handeSubmit={(e) => this.handleSubmit(e)}
-          />
+        <div className='header-and-first-section'>
+          <header class="header">
+            <h1 class="header1">Smoovie - Subtitle Movie Analyser</h1>
+          </header>
+          <div className='section-form'>
+            <h2>Step 1: Search for any movie:</h2>
+            <MovieForm
+              value={this.state.value}
+              handleChange={(e) => this.handleChange(e)}
+              handeSubmit={(e) => this.handleSubmit(e)}
+            />
+          </div>
         </div>
 
-        <div className='section-movie-list'>
-          <h2>Select your movie:</h2>
-          <MovieList
-            submitted={this.state.submitted}
-            getMovieList={() => this.getMovieList()}
-            handleImageClick={(e) => this.handleImageClick(e)}
 
-            error={this.state.movieListError}
-            isLoaded={this.state.movieListIsLoaded}
-            movies={this.state.movieListMovies}
-          />
-        </div>
 
-        <div className='section-words-list'>
-          <h2>Word list</h2>
-          <WordList
-            getWordList={() => this.getWordList()}
-            clicked={this.state.movieClicked}
+        <MovieList
+          submitted={this.state.submitted}
+          getMovieList={() => this.getMovieList()}
+          handleImageClick={(e) => this.handleImageClick(e)}
 
-            error={this.state.wordListError}
-            isLoaded={this.state.wordListIsLoaded}
-            words={this.state.wordListWords}
-          />
-        </div>
+          error={this.state.movieListError}
+          isLoaded={this.state.movieListIsLoaded}
+          movies={this.state.movieListMovies}
+        />
 
-        <div className='section-words-frequency'>
-          <h2>Word Frequencies</h2>
-          <WordFrequencies
-            getWordData={() => this.getWordData()}
-            wordsRetrieved={this.state.wordsRetrieved}
 
-            error={this.state.wordDataError}
-            isLoaded={this.state.wordDataIsLoaded}
-            words={this.state.wordData.wordFrequencies}
-            wordsAll={this.state.wordData.wordFrequenciesWithCommonWords}
-          />
-        </div>
 
-        <div className='section-words-lengths'>
-          <h2>Word Lengths</h2>
-          <WordLengths
-            error={this.state.wordDataError}
-            isLoaded={this.state.wordDataIsLoaded}
-            wordLengths={this.state.wordData.wordLengths}
-          />
-        </div>
+        <WordList
+          getWordList={() => this.getWordList()}
+          setWordCount={(count) => this.setWordCount(count)}
+          clicked={this.state.movieClicked}
 
-        <div className='section-phrase-frequency'>
-          <h2>Phrase Frequencies</h2>
-          <PhraseFrequencies
-            error={this.state.wordDataError}
-            isLoaded={this.state.wordDataIsLoaded}
-            phraseFrequencies={this.state.wordData.phraseFrequencies}
-          />
-        </div>
+          error={this.state.wordListError}
+          isLoaded={this.state.wordListIsLoaded}
+          words={this.state.wordListWords}
+        />
 
-        <div className='section-words-swear'>
-          <h2>Swear Word Frequencies</h2>
-          <SwearWordFrequencies
-            error={this.state.wordDataError}
-            isLoaded={this.state.wordDataIsLoaded}
-            swearWordFrequencies={this.state.wordData.swearWordFrequencies}
-          />
-        </div>
+        <WordFrequencies
+          getWordData={() => this.getWordData()}
+          wordsRetrieved={this.state.wordsRetrieved}
+          wordCount={this.state.wordCount}
 
-        <div className='section-words-swear-time'>
-          <h2>Swear Word Frequencies Throughout the Movie</h2>
-          <SwearWordFrequenciesOverTime
-            error={this.state.wordDataError}
-            isLoaded={this.state.wordDataIsLoaded}
-            swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
-          />
-        </div>
+          error={this.state.wordDataError}
+          isLoaded={this.state.wordDataIsLoaded}
+          words={this.state.wordData.wordFrequencies}
+          wordsAll={this.state.wordData.wordFrequenciesWithCommonWords}
+          commonRemoved={this.state.commonRemoved}
+
+          // Toggle Props
+          defaultChecked={this.state.commonRemoved}
+          icons={false}
+          onChange={() => this.handleToggleChange()}
+        />
+
+        <WordLengths
+          error={this.state.wordDataError}
+          isLoaded={this.state.wordDataIsLoaded}
+          wordLengths={this.state.wordData.wordLengths}
+        />
+
+        <PhraseFrequencies
+          error={this.state.wordDataError}
+          isLoaded={this.state.wordDataIsLoaded}
+          phraseFrequencyRanges={this.state.wordData.phraseFrequencyRanges}
+          sliderCurrentValue={this.state.sliderCurrentValue}
+          onChange={(e) => this.handleSliderChange(e)}
+        />
+
+        <SwearWordFrequencies
+          error={this.state.wordDataError}
+          isLoaded={this.state.wordDataIsLoaded}
+          swearWordFrequencies={this.state.wordData.swearWordFrequencies}
+        />
+
+        <SwearWordFrequenciesOverTime
+          error={this.state.wordDataError}
+          isLoaded={this.state.wordDataIsLoaded}
+          swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
+        />
       </div >
 
 

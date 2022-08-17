@@ -19,7 +19,7 @@ class WordLengths extends React.Component {
     if (error) {
       return <div> Error: {error.message}</div>
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      // return <div>Loading...</div>
     } else {
       console.log(wordLengths);
 
@@ -48,9 +48,12 @@ class WordLengths extends React.Component {
 
       // return chart
       return (
-        <div className="chart-outer">
-          <div className="chart">
-            <Doughnut data={chartData} options={options} />
+        <div className='section-words-lengths'>
+          <h2>Word Lengths</h2>
+          <div className="chart-outer">
+            <div className="chart">
+              <Doughnut data={chartData} options={options} />
+            </div>
           </div>
         </div>
       )

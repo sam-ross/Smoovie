@@ -7,6 +7,9 @@ class WordList extends React.Component {
       console.log("Calling API from child (getWordList)");
       this.props.getWordList();
     }
+    if (prevProps.words.length !== this.props.words.length) {
+      this.props.setWordCount(this.props.words.length);
+    }
   }
 
   render() {
@@ -15,19 +18,16 @@ class WordList extends React.Component {
     const words = this.props.words;
 
     if (error) {
-      return <div> Error: {error.message}</div>
+      return <div className="word-count">
+        Error: {error.message}
+        <br />API: OpenSubtitles API
+      </div>
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      // return <div className="word-count">Loading...</div>
     } else {
+
       return (
-        <ul>
-          {/* {words.map(word => (
-            <li key={word}>
-              {word}
-            </li>
-          ))} */}
-          {words.length}
-        </ul>
+        <></>
       )
     }
   }

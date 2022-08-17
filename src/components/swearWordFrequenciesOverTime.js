@@ -11,7 +11,7 @@ class SwearWordFrequenciesOverTime extends React.Component {
     if (error) {
       return <div> Error: {error.message}</div>
     } else if (!isLoaded) {
-      return <div>Loading...</div>
+      // return <div>Loading...</div>
     } else {
       console.log(swearWordFrequenciesOverTime);
 
@@ -62,7 +62,8 @@ class SwearWordFrequenciesOverTime extends React.Component {
       }
 
       return (
-        <div>
+        <div className='section-words-swear-time'>
+          <h2>Swear Word Frequencies throughout the Movie</h2>
           <Line data={chartData} options={options} />
         </div>
       )
