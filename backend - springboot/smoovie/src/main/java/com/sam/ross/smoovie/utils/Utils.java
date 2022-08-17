@@ -240,6 +240,42 @@ public class Utils {
         return List.of(mov1, mov2, mov3, mov4, mov5);
     }
 
+    public static List<String> getVanillaWords2() {
+        return List.of(
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's",
+                "who's"
+        );
+    }
+
     public static List<String> getVanillaWords() {
         return List.of(
                 "who's",

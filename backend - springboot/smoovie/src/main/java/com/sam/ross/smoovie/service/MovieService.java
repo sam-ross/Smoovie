@@ -7,6 +7,7 @@ import com.sam.ross.smoovie.objects.IMDbSearchResponse;
 import com.sam.ross.smoovie.objects.subtitles.DownloadRequestResponse;
 import com.sam.ross.smoovie.objects.subtitles.SubtilesSearchResponse;
 import com.sam.ross.smoovie.objects.subtitles.Subtitles;
+import com.sam.ross.smoovie.objects.words.PhraseFrequencies;
 import com.sam.ross.smoovie.objects.words.WordData;
 import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.utils.Utils;
@@ -122,7 +123,7 @@ public class MovieService {
         fullSubtitles = fullSubtitles.replace("―", " ").replace("–", " ").replace("-", " ");
 
         List<String> charactersToRemove = List.of("\"", "“", "”", ",", ".", "…", "♪", "♫", ":", ";", "?", "!", "[",
-                "]", "(", ")", "<", ">", "{", "}", "#");
+                "]", "(", ")", "<", ">", "{", "}", "#", "*");
         for (String ch : charactersToRemove) {
             fullSubtitles = fullSubtitles.replace(ch, "");
         }
@@ -143,11 +144,11 @@ public class MovieService {
     }
 
     // Data time
-    public WordData getWordData(List<String> words, int phraseLength, int numberOfSections) {
+    public WordData getWordData(List<String> words, int numberOfSections) {
         HashMap<String, Integer> wordFrequencies = getWordFrequencies(words, true);
         HashMap<String, Integer> wordFrequenciesWithCommonWords = getWordFrequencies(words, false);
         HashMap<String, Integer> wordLengths = getWordLengths(words);
-        HashMap<String, Integer> phraseFrequencies = getPhraseFrequencies(words, phraseLength);
+        List<PhraseFrequencies> phraseFrequencyRange = getPhraseFrequenciesRange(words);
         HashMap<String, Integer> swearWordFrequencies = getSwearWordFrequencies(words);
         HashMap<String, Integer> swearWordFrequenciesOverTime = getSwearWordFrequenciesOverTime(words, numberOfSections);
 
@@ -155,7 +156,7 @@ public class MovieService {
                 .wordFrequencies(wordFrequencies)
                 .wordFrequenciesWithCommonWords(wordFrequenciesWithCommonWords)
                 .wordLengths(wordLengths)
-                .phraseFrequencies(phraseFrequencies)
+                .phraseFrequencyRanges(phraseFrequencyRange)
                 .swearWordFrequencies(swearWordFrequencies)
                 .swearWordFrequenciesOverTime(swearWordFrequenciesOverTime)
                 .build();
@@ -215,6 +216,18 @@ public class MovieService {
         return hm;
     }
 
+    public List<PhraseFrequencies> getPhraseFrequenciesRange(List<String> words) {
+        List<PhraseFrequencies> phraseFrequencyRanges = new ArrayList<>();
+
+        for (int i = 2; i <= 8; i++) {
+            phraseFrequencyRanges.add(PhraseFrequencies.builder()
+                    .phraseFrequencyRange(getPhraseFrequencies(words, i))
+                    .build());
+        }
+
+        return phraseFrequencyRanges;
+    }
+
     public HashMap<String, Integer> getPhraseFrequencies(List<String> words, int phraseLength) {
         // phrases
         HashMap<String, Integer> phr = new HashMap<>();
@@ -234,7 +247,7 @@ public class MovieService {
 
         if (numberOfDuplicates == 0) System.out.println("There were no common phrases for this size of phrase");
 
-        phr = sortByValue(phr, true);
+        phr = sortByValue(phr, false);
 
         System.out.println(phr.values());
         System.out.println(phr.entrySet());
@@ -285,6 +298,11 @@ public class MovieService {
                 swr.put(key, existingValue + hm.get(key));
             }
             wordCounter++;
+        }
+        if (swr.get("nigg") != null) {
+            int curr = swr.get("nigg");
+            swr.remove("nigg");
+            swr.put("n-word", curr);
         }
 
         swr = sortByValue(swr, false);
@@ -340,6 +358,8 @@ public class MovieService {
 
         System.out.println("wordCounter: " + wordCounter);
 //        System.out.println(swr.entrySet());
+
+        swr.put(String.valueOf(numberOfSections + 1), 0);
 
         return swr;
     }

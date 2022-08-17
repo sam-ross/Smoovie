@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Getter
 @Builder
@@ -15,7 +16,7 @@ public class WordData {
     private HashMap<String, Integer> wordFrequencies;
     private HashMap<String, Integer> wordFrequenciesWithCommonWords;
     private HashMap<String, Integer> wordLengths;
-    private HashMap<String, Integer> phraseFrequencies;
+    private List<PhraseFrequencies> phraseFrequencyRanges;
     private HashMap<String, Integer> swearWordFrequencies;
     private HashMap<String, Integer> swearWordFrequenciesOverTime;
 }
