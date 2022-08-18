@@ -815,8 +815,6 @@ public class Utils {
                 "goddamn",
                 "goddammit",
                 "hell",
-                "ho",
-                "hoe",
                 "homo",
                 "piss",
                 "poop",
@@ -824,7 +822,6 @@ public class Utils {
                 "queer",
                 "sex",
                 "slut",
-                "vagina",
                 "wank",
                 "tit",
                 "tits"
