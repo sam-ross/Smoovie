@@ -21,11 +21,12 @@ class MainWrapper extends React.Component {
       wordCount: null,
 
       movieListError: null,
-      movieListIsLoaded: false,
+      movieListIsLoaded: 'waiting',
+      movieListHasLoadedFirstTime: false,
       movieListMovies: [],
 
       wordListError: null,
-      wordListIsLoaded: false,
+      wordListIsLoaded: 'waiting',
       wordListWords: [],
 
       imdbId: null,
@@ -33,7 +34,7 @@ class MainWrapper extends React.Component {
       wordsRetrieved: false,
 
       wordDataError: null,
-      wordDataIsLoaded: false,
+      wordDataIsLoaded: 'waiting',
       wordData: {},
 
       commonRemoved: true,
@@ -90,20 +91,27 @@ class MainWrapper extends React.Component {
 
   getMovieList() {
     console.log("Getting movie list (parent): " + this.state.value);
+    this.setState({
+      movieListIsLoaded: 'loading',
+      movieListHasLoadedFirstTime: false,
+      wordListIsLoaded: 'waiting',
+      wordDataIsLoaded: 'waiting'
+    });
 
     fetch("http://localhost:8081/imdb/search/" + this.state.value)
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
-            movieListIsLoaded: true,
+            movieListIsLoaded: 'done',
+            movieListHasLoadedFirstTime: true,
             movieListMovies: result.movies,
             movieListError: null
           });
         },
         (error) => {
           this.setState({
-            movieListIsLoaded: true,
+            movieListIsLoaded: 'done',
             movieListError: error
           });
         }
@@ -113,13 +121,17 @@ class MainWrapper extends React.Component {
 
   getWordList() {
     console.log("Getting word list (parent): " + this.state.imdbId);
+    this.setState({
+      wordListIsLoaded: 'loading',
+      wordDataIsLoaded: 'waiting'
+    });
 
     fetch("http://localhost:8081/words/" + this.state.imdbId)
       .then(res => res.json())
       .then(
         (result) => {
           this.setState({
-            wordListIsLoaded: true,
+            wordListIsLoaded: 'done',
             wordListWords: result.words,
             wordsRetrieved: !this.state.wordsRetrieved,
             wordListError: null,
@@ -128,7 +140,7 @@ class MainWrapper extends React.Component {
         (error) => {
           console.log(error);
           this.setState({
-            wordListIsLoaded: true,
+            wordListIsLoaded: 'done',
             wordListError: error,
           });
         }
@@ -139,6 +151,8 @@ class MainWrapper extends React.Component {
   getWordData() {
     console.log("Getting word data (parent)");
     console.log(JSON.stringify(this.state.wordListWords));
+
+    this.setState({ wordDataIsLoaded: 'loading' });
 
     fetch("http://localhost:8081/words/data", {
       method: 'POST',
@@ -153,14 +167,14 @@ class MainWrapper extends React.Component {
         (result) => {
           console.log(result);
           this.setState({
-            wordDataIsLoaded: true,
+            wordDataIsLoaded: 'done',
             wordData: result,
             wordDataError: null
           });
         },
         (error) => {
           this.setState({
-            wordDataIsLoaded: true,
+            wordDataIsLoaded: 'done',
             wordDataError: error
           });
         }
@@ -173,32 +187,38 @@ class MainWrapper extends React.Component {
 
       <div>
         <div className='header-and-first-section'>
-          <header class="header">
-            <h1 class="header1">Smoovie - Subtitle Movie Analyser</h1>
-          </header>
-          <div className='section-form'>
-            <h2>Step 1: Search for any movie:</h2>
-            <MovieForm
-              value={this.state.value}
-              handleChange={(e) => this.handleChange(e)}
-              handeSubmit={(e) => this.handleSubmit(e)}
-            />
+          <div className="header">
+            <p className='smoovie-title'>Smoovie</p>
+            <a className='documentation'>Documentation</a>
+          </div>
+
+          <div className="search">
+            <h1>Subtitle moovie analyser</h1>
+            <p className="under-heading">Step 1: Search for a moovie!</p>
+
+            <div className='input-container'>
+              <MovieForm
+                value={this.state.value}
+                handleChange={(e) => this.handleChange(e)}
+                handeSubmit={(e) => this.handleSubmit(e)}
+                movieListIsLoaded={this.state.movieListIsLoaded}
+              />
+            </div>
+
           </div>
         </div>
-
-
 
         <MovieList
           submitted={this.state.submitted}
           getMovieList={() => this.getMovieList()}
           handleImageClick={(e) => this.handleImageClick(e)}
+          wordListIsLoaded={this.state.wordListIsLoaded}
+          wordDataIsLoaded={this.state.wordDataIsLoaded}
 
           error={this.state.movieListError}
           isLoaded={this.state.movieListIsLoaded}
           movies={this.state.movieListMovies}
         />
-
-
 
         <WordList
           getWordList={() => this.getWordList()}
@@ -208,6 +228,8 @@ class MainWrapper extends React.Component {
           error={this.state.wordListError}
           isLoaded={this.state.wordListIsLoaded}
           words={this.state.wordListWords}
+
+          movieListHasLoadedFirstTime={this.state.movieListHasLoadedFirstTime}
         />
 
         <WordFrequencies

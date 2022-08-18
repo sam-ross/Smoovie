@@ -20,9 +20,12 @@ class WordFrequencies extends React.Component {
 
     if (error) {
       return <div> Error: {error.message}</div>
-    } else if (!isLoaded) {
-      // return <div>Loading...</div>
+    } else if (isLoaded === 'waiting') {
+      console.log("waiting (wordFrequencies)");
+    } else if (isLoaded === 'loading') {
+      console.log("loading!!!!! (wordFrequencies)");
     } else {
+      console.log(" XXXXXXX done...")
       if (commonRemoved) {
         wordsChosen = this.props.words;
       } else {
@@ -91,7 +94,7 @@ class WordFrequencies extends React.Component {
 
 
       return (
-        <div className='section-words-frequency'>
+        <div className='section-words-frequency' id="word-frequency">
           <div className='words-frequency-header'>
             <h2>Word Frequencies</h2>
             <div className='word-count-outer'>

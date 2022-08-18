@@ -18,8 +18,10 @@ class SwearWordFrequencies extends React.Component {
 
     if (error) {
       return <div> Error: {error.message}</div>
-    } else if (!isLoaded) {
-      // return <div>Loading...</div>
+    } else if (isLoaded === 'waiting') {
+      console.log("waiting (swearWordFrequencies)");
+    } else if (isLoaded === 'loading') {
+      console.log("loading!!!!! (swearWordFrequencies)");
     } else {
       console.log(swearWordFrequencies);
       // set up chart data
@@ -47,6 +49,11 @@ class SwearWordFrequencies extends React.Component {
           //   display: true,
           //   text: 'Count of different word lengths'
           // }
+        },
+        layout: {
+          padding: {
+            left: 30,
+          }
         }
       }
 
@@ -60,9 +67,9 @@ class SwearWordFrequencies extends React.Component {
 
       return (
         <div className='section-words-swear'>
-          <h2>Swear Word Frequencies</h2>
+          <h2 className="h2-swear-frequencies">Swear Word Frequencies</h2>
           <div className="chart-outer">
-            <div className="chart">
+            <div className="chart-circle">
               {swearWordsFunc()}
             </div>
           </div>

@@ -3,6 +3,15 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
 
 class SwearWordFrequenciesOverTime extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (prevProps.isLoaded === "loading" && this.props.isLoaded === "done") {
+      // console.log("xxxx done");
+      setTimeout(function () {
+        document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
+      }, 400);
+    }
+  }
+
   render() {
     const error = this.props.error;
     const isLoaded = this.props.isLoaded;
@@ -10,8 +19,10 @@ class SwearWordFrequenciesOverTime extends React.Component {
 
     if (error) {
       return <div> Error: {error.message}</div>
-    } else if (!isLoaded) {
-      // return <div>Loading...</div>
+    } else if (isLoaded === 'waiting') {
+      console.log("waiting (swearWordFrequenciesOverTime)");
+    } else if (isLoaded === 'loading') {
+      console.log("loading!!!!! (swearWordFrequenciesOverTime)");
     } else {
       console.log(swearWordFrequenciesOverTime);
 

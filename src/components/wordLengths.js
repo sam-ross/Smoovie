@@ -18,8 +18,10 @@ class WordLengths extends React.Component {
 
     if (error) {
       return <div> Error: {error.message}</div>
-    } else if (!isLoaded) {
-      // return <div>Loading...</div>
+    } else if (isLoaded === 'waiting') {
+      console.log("waiting (wordLengths)");
+    } else if (isLoaded === 'loading') {
+      console.log("loading!!!!! (wordLengths)");
     } else {
       console.log(wordLengths);
 
@@ -34,6 +36,8 @@ class WordLengths extends React.Component {
           data: values,
           backgroundColor: colours,
           hoverOffset: 15,
+          // clip: { left: 0, top: -200, right: 0, bottom: 0 }
+          // maintainAspectRatio: false
         }]
       }
 
@@ -43,15 +47,20 @@ class WordLengths extends React.Component {
           legend: {
             position: 'right',
           }
+        },
+        layout: {
+          padding: {
+            left: 30,
+          }
         }
       }
 
       // return chart
       return (
         <div className='section-words-lengths'>
-          <h2>Word Lengths</h2>
+          <h2 className="h2-word-lengths">Word Lengths</h2>
           <div className="chart-outer">
-            <div className="chart">
+            <div className="chart-circle">
               <Doughnut data={chartData} options={options} />
             </div>
           </div>

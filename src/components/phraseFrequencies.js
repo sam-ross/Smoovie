@@ -12,8 +12,10 @@ class PhraseFrequencies extends React.Component {
 
     if (error) {
       return <div> Error: {error.message}</div>
-    } else if (!isLoaded) {
-      // return <div>Loading...</div>
+    } else if (isLoaded === 'waiting') {
+      console.log("waiting (phraseFrequencies)");
+    } else if (isLoaded === 'loading') {
+      console.log("loading!!!!! (phraseFrequencies)");
     } else {
       console.log(phraseFrequencyRanges);
 
