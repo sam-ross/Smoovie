@@ -13,6 +13,10 @@ class MovieList extends React.Component {
       console.log("Calling API from child (getMovieList)");
       this.props.getMovieList();
     }
+    if (prevProps.demoMode === false && this.props.demoMode === true) {
+      console.log("Calling API from child (getMovieList) [demo mode true]");
+      this.props.getMovieList();
+    }
   }
 
   render() {
@@ -21,10 +25,6 @@ class MovieList extends React.Component {
     const movies = this.props.movies;
     const wordListIsLoading = (this.props.wordListIsLoaded === 'loading');
     const wordDataIsLoading = (this.props.wordDataIsLoaded === 'loading');
-
-    // if (wordListIsLoading || wordDataIsLoading) {
-    //   console.log(wordListIsLoading + " " + wordDataIsLoading);
-    // }
 
     if (error) {
       return <div>

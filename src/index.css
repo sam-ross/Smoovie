@@ -58,11 +58,31 @@ h2 {
   margin:0;
 }
 
-.documentation {
+.header-nav {
+  padding-left: 0;
+  width: 400px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.demo-mode {
+  display: flex;
+}
+
+.demo-mode a {
+  margin-right:8px;
+}
+
+.header-nav a {
   color: #fff;
   font-size: 18px;
   font-weight: 400;
-  /* padding-right: 20px; */
+  text-decoration: none;
+}
+
+.header-nav a:hover {
+  /* color: #8f0055;
+  text-decoration:underline; */
 }
 
 .search {
@@ -88,6 +108,26 @@ h1 {
   font-weight: 300;
   margin:0;
 }
+
+fieldset {
+  border: none;
+}
+
+#form-disabled-true {
+  padding-left: 0;
+}
+
+#label-disabled-true {
+  color:#999;
+}
+
+#label-disabled-true:hover {
+  cursor: not-allowed;
+}
+
+#i-disabled-true {
+  display: none;
+}  
 
 input{
   position: relative;

@@ -9,8 +9,10 @@ import WordLengths from './components/wordLengths';
 import PhraseFrequencies from './components/phraseFrequencies';
 import SwearWordFrequencies from './components/swearWordFrequencies';
 import SwearWordFrequenciesOverTime from './components/swearWordFrequenciesOverTime';
-
-
+import Toggle from 'react-toggle'
+import pulpFictionMovie from './demo/pulp-fiction.json';
+import pulpFictionWords from './demo/pulp-fiction-words.json';
+import pulpFictionData from './demo/pulp-fiction-data.json'
 
 class MainWrapper extends React.Component {
   constructor() {
@@ -38,7 +40,8 @@ class MainWrapper extends React.Component {
       wordData: {},
 
       commonRemoved: true,
-      sliderCurrentValue: 3
+      sliderCurrentValue: 3,
+      demoMode: false
     };
   }
 
@@ -83,6 +86,18 @@ class MainWrapper extends React.Component {
     this.setState({ commonRemoved: !this.state.commonRemoved });
   }
 
+  handleToggleChangeDemo() {
+    console.log("Demo mode changed from: " + this.state.demoMode + " to " + !this.state.demoMode);
+
+    // hides all the sections again when flicking the toggle EITHER way (needed for scrollIntoView to work)
+    this.setState({
+      movieListIsLoaded: "waiting",
+      wordListIsLoaded: "waiting",
+      wordDataIsLoaded: "waiting",
+      demoMode: !this.state.demoMode,
+    })
+  }
+
   handleSliderChange(e) {
     let newPosition = e + 2;
     console.log("Moving slider from :" + this.state.sliderCurrentValue + " to " + newPosition);
@@ -91,6 +106,7 @@ class MainWrapper extends React.Component {
 
   getMovieList() {
     console.log("Getting movie list (parent): " + this.state.value);
+    console.log("Demo mode: " + this.state.demoMode);
     this.setState({
       movieListIsLoaded: 'loading',
       movieListHasLoadedFirstTime: false,
@@ -98,24 +114,37 @@ class MainWrapper extends React.Component {
       wordDataIsLoaded: 'waiting'
     });
 
-    fetch("http://localhost:8081/imdb/search/" + this.state.value)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            movieListIsLoaded: 'done',
-            movieListHasLoadedFirstTime: true,
-            movieListMovies: result.movies,
-            movieListError: null
-          });
-        },
-        (error) => {
-          this.setState({
-            movieListIsLoaded: 'done',
-            movieListError: error
-          });
-        }
-      )
+    if (this.state.demoMode) {
+      console.log("In demo mode");
+      console.log(pulpFictionMovie.movies);
+
+      this.setState({
+        movieListIsLoaded: 'done',
+        movieListHasLoadedFirstTime: true,
+        movieListMovies: pulpFictionMovie.movies,
+        movieListError: null
+      });
+    } else {
+      fetch("http://localhost:8081/imdb/search/" + this.state.value)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              movieListIsLoaded: 'done',
+              movieListHasLoadedFirstTime: true,
+              movieListMovies: result.movies,
+              movieListError: null
+            });
+          },
+          (error) => {
+            this.setState({
+              movieListIsLoaded: 'done',
+              movieListError: error
+            });
+          }
+        )
+    }
+
 
   }
 
@@ -126,59 +155,87 @@ class MainWrapper extends React.Component {
       wordDataIsLoaded: 'waiting'
     });
 
-    fetch("http://localhost:8081/words/" + this.state.imdbId)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            wordListIsLoaded: 'done',
-            wordListWords: result.words,
-            wordsRetrieved: !this.state.wordsRetrieved,
-            wordListError: null,
-          });
-        },
-        (error) => {
-          console.log(error);
-          this.setState({
-            wordListIsLoaded: 'done',
-            wordListError: error,
-          });
-        }
-      )
+    if (this.state.demoMode) {
+      console.log("In demo mode");
+      console.log(pulpFictionWords.words);
+
+      this.setState({
+        wordListIsLoaded: 'done',
+        wordListWords: pulpFictionWords.words,
+        wordsRetrieved: !this.state.wordsRetrieved,
+        wordListError: null,
+      });
+    } else {
+      fetch("http://localhost:8081/words/" + this.state.imdbId)
+        .then(res => {
+          if (res.status >= 400) {
+            throw new Error("Server responded with error code - " + res.status);
+          }
+          res.json()
+        })
+        .then(
+          (result) => {
+            this.setState({
+              wordListIsLoaded: 'done',
+              wordListWords: result.words,
+              wordsRetrieved: !this.state.wordsRetrieved,
+              wordListError: null,
+            });
+          },
+          (error) => {
+            console.log(error);
+            this.setState({
+              wordListIsLoaded: 'done',
+              wordListError: error,
+            });
+          }
+        )
+    }
 
   }
 
   getWordData() {
     console.log("Getting word data (parent)");
-    console.log(JSON.stringify(this.state.wordListWords));
+    // console.log(JSON.stringify(this.state.wordListWords));
 
     this.setState({ wordDataIsLoaded: 'loading' });
 
-    fetch("http://localhost:8081/words/data", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(this.state.wordListWords),
-    })
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          this.setState({
-            wordDataIsLoaded: 'done',
-            wordData: result,
-            wordDataError: null
-          });
+    if (this.state.demoMode) {
+      console.log("In demo mode");
+      console.log(pulpFictionData);
+
+      this.setState({
+        wordDataIsLoaded: 'done',
+        wordData: pulpFictionData,
+        wordDataError: null
+      });
+    } else {
+      fetch("http://localhost:8081/words/data", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        (error) => {
-          this.setState({
-            wordDataIsLoaded: 'done',
-            wordDataError: error
-          });
-        }
-      )
+        body: JSON.stringify(this.state.wordListWords),
+      })
+        .then(res => res.json())
+        .then(
+          (result) => {
+            console.log(result);
+            this.setState({
+              wordDataIsLoaded: 'done',
+              wordData: result,
+              wordDataError: null
+            });
+          },
+          (error) => {
+            this.setState({
+              wordDataIsLoaded: 'done',
+              wordDataError: error
+            });
+          }
+        )
+    }
 
   }
 
@@ -189,7 +246,20 @@ class MainWrapper extends React.Component {
         <div className='header-and-first-section'>
           <div className="header">
             <p className='smoovie-title'>Smoovie</p>
-            <a className='documentation'>Documentation</a>
+            <ul className="header-nav">
+              <li >
+                <a href='' >Documentation</a>
+              </li>
+              <li className='demo-mode'>
+                <a>Demo Mode</a>
+
+                <Toggle
+                  defaultChecked={this.state.demoMode}
+                  icons={false}
+                  onChange={() => this.handleToggleChangeDemo()} />
+              </li>
+            </ul>
+
           </div>
 
           <div className="search">
@@ -202,6 +272,7 @@ class MainWrapper extends React.Component {
                 handleChange={(e) => this.handleChange(e)}
                 handeSubmit={(e) => this.handleSubmit(e)}
                 movieListIsLoaded={this.state.movieListIsLoaded}
+                demoMode={this.state.demoMode}
               />
             </div>
 
@@ -218,6 +289,8 @@ class MainWrapper extends React.Component {
           error={this.state.movieListError}
           isLoaded={this.state.movieListIsLoaded}
           movies={this.state.movieListMovies}
+
+          demoMode={this.state.demoMode}
         />
 
         <WordList
@@ -229,7 +302,7 @@ class MainWrapper extends React.Component {
           isLoaded={this.state.wordListIsLoaded}
           words={this.state.wordListWords}
 
-          movieListHasLoadedFirstTime={this.state.movieListHasLoadedFirstTime}
+          movieListIsLoaded={this.state.movieListIsLoaded}
         />
 
         <WordFrequencies

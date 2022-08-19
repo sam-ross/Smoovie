@@ -10,7 +10,7 @@ class WordList extends React.Component {
     if (prevProps.words.length !== this.props.words.length) {
       this.props.setWordCount(this.props.words.length);
     }
-    if (prevProps.movieListHasLoadedFirstTime === false && this.props.movieListHasLoadedFirstTime === true) {
+    if ((prevProps.movieListIsLoaded === 'loading' || prevProps.movieListIsLoaded === 'waiting') && this.props.movieListIsLoaded === 'done') {
       console.log("Wow - movie list rendered");
       setTimeout(function () {
         document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });

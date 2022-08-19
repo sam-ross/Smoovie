@@ -1,0 +1,12 @@
+{
+  "movies": [
+      {
+          "id": "tt0110912",
+          "resultType": "Title",
+          "image": "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_Ratio0.7273_AL_.jpg",
+          "title": "Pulp Fiction",
+          "description": "(1994)"
+      }
+  ]
+}
+
