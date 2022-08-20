@@ -13,14 +13,11 @@ class WordFrequencies extends React.Component {
   }
 
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
     const commonRemoved = this.props.commonRemoved;
     let wordsChosen;
 
-    if (error) {
-      return <div> Error: {error.message}</div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (wordFrequencies)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (wordFrequencies)");

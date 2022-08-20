@@ -13,13 +13,10 @@ class SwearWordFrequenciesOverTime extends React.Component {
   }
 
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
     const swearWordFrequenciesOverTime = this.props.swearWordFrequenciesOverTime;
 
-    if (error) {
-      return <div> Error: {error.message}</div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (swearWordFrequenciesOverTime)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (swearWordFrequenciesOverTime)");

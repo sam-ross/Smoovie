@@ -22,12 +22,10 @@ class MainWrapper extends React.Component {
       submitted: false,
       wordCount: null,
 
-      movieListError: null,
       movieListIsLoaded: 'waiting',
-      movieListHasLoadedFirstTime: false,
       movieListMovies: [],
+      moviesWithNoSubtitles: [],
 
-      wordListError: null,
       wordListIsLoaded: 'waiting',
       wordListWords: [],
 
@@ -35,7 +33,6 @@ class MainWrapper extends React.Component {
       movieClicked: false,
       wordsRetrieved: false,
 
-      wordDataError: null,
       wordDataIsLoaded: 'waiting',
       wordData: {},
 
@@ -68,9 +65,27 @@ class MainWrapper extends React.Component {
     console.log(this.state.value);
 
     e.preventDefault();
+
     this.setState({
       imdbId: e.target.alt,
       movieClicked: !this.state.movieClicked
+    });
+  }
+
+  handleNoSubtitles() {
+    let newMovieList = this.state.movieListMovies;
+    newMovieList.map((movie) => {
+      if (movie.id === this.state.imdbId) {
+        movie["title"] = <b>The OpenSubtitles API doesn't have subtitles for this one</b>;
+        movie["description"] = "";
+      }
+    })
+    let temp = this.state.moviesWithNoSubtitles;
+    temp.push(this.state.imdbId);
+
+    this.setState({
+      movieListMovies: newMovieList,
+      moviesWithNoSubtitles: temp,
     });
   }
 
@@ -104,14 +119,16 @@ class MainWrapper extends React.Component {
     this.setState({ sliderCurrentValue: newPosition });
   }
 
+
+
   getMovieList() {
     console.log("Getting movie list (parent): " + this.state.value);
     console.log("Demo mode: " + this.state.demoMode);
     this.setState({
       movieListIsLoaded: 'loading',
-      movieListHasLoadedFirstTime: false,
       wordListIsLoaded: 'waiting',
-      wordDataIsLoaded: 'waiting'
+      wordDataIsLoaded: 'waiting',
+      moviesWithNoSubtitles: [],
     });
 
     if (this.state.demoMode) {
@@ -120,31 +137,37 @@ class MainWrapper extends React.Component {
 
       this.setState({
         movieListIsLoaded: 'done',
-        movieListHasLoadedFirstTime: true,
         movieListMovies: pulpFictionMovie.movies,
-        movieListError: null
       });
     } else {
       fetch("http://localhost:8081/imdb/search/" + this.state.value)
-        .then(res => res.json())
+        .then((res) => {
+          if (res.status >= 400 || res.status === 204) {
+            throw new Error(res.status);
+          }
+          return res.json();
+        })
         .then(
           (result) => {
             this.setState({
               movieListIsLoaded: 'done',
-              movieListHasLoadedFirstTime: true,
               movieListMovies: result.movies,
-              movieListError: null
             });
           },
           (error) => {
+            console.log(error);
+            if (error.message === "204") {
+              window.alert('No results found for "' + this.state.value + '"');
+            } else {
+              window.alert("Unexpected error returned: " + error.message);
+            }
+
             this.setState({
-              movieListIsLoaded: 'done',
-              movieListError: error
+              movieListIsLoaded: 'waiting',
             });
           }
         )
     }
-
 
   }
 
@@ -152,7 +175,7 @@ class MainWrapper extends React.Component {
     console.log("Getting word list (parent): " + this.state.imdbId);
     this.setState({
       wordListIsLoaded: 'loading',
-      wordDataIsLoaded: 'waiting'
+      wordDataIsLoaded: 'waiting',
     });
 
     if (this.state.demoMode) {
@@ -163,30 +186,33 @@ class MainWrapper extends React.Component {
         wordListIsLoaded: 'done',
         wordListWords: pulpFictionWords.words,
         wordsRetrieved: !this.state.wordsRetrieved,
-        wordListError: null,
       });
     } else {
       fetch("http://localhost:8081/words/" + this.state.imdbId)
-        .then(res => {
-          if (res.status >= 400) {
-            throw new Error("Server responded with error code - " + res.status);
+        .then((res) => {
+          if (res.status >= 400 || res.status === 204) {
+            throw new Error(res.status);
           }
-          res.json()
+          return res.json();
         })
         .then(
           (result) => {
+            console.log(result);
             this.setState({
               wordListIsLoaded: 'done',
               wordListWords: result.words,
               wordsRetrieved: !this.state.wordsRetrieved,
-              wordListError: null,
             });
           },
           (error) => {
             console.log(error);
+            if (error.message === "204") {
+              this.handleNoSubtitles();
+            } else {
+              window.alert("Unexpected error returned: " + error.message);
+            }
             this.setState({
-              wordListIsLoaded: 'done',
-              wordListError: error,
+              wordListIsLoaded: 'waiting',
             });
           }
         )
@@ -196,8 +222,6 @@ class MainWrapper extends React.Component {
 
   getWordData() {
     console.log("Getting word data (parent)");
-    // console.log(JSON.stringify(this.state.wordListWords));
-
     this.setState({ wordDataIsLoaded: 'loading' });
 
     if (this.state.demoMode) {
@@ -207,7 +231,6 @@ class MainWrapper extends React.Component {
       this.setState({
         wordDataIsLoaded: 'done',
         wordData: pulpFictionData,
-        wordDataError: null
       });
     } else {
       fetch("http://localhost:8081/words/data", {
@@ -218,20 +241,25 @@ class MainWrapper extends React.Component {
         },
         body: JSON.stringify(this.state.wordListWords),
       })
-        .then(res => res.json())
+        .then((res) => {
+          if (res.status >= 400 || res.status === 204) {
+            throw new Error(res.status);
+          }
+          return res.json();
+        })
         .then(
           (result) => {
             console.log(result);
             this.setState({
               wordDataIsLoaded: 'done',
               wordData: result,
-              wordDataError: null
             });
           },
           (error) => {
+            console.log(error);
+            window.alert("Unexpected error returned: " + error.message);
             this.setState({
-              wordDataIsLoaded: 'done',
-              wordDataError: error
+              wordDataIsLoaded: 'waiting',
             });
           }
         )
@@ -286,7 +314,6 @@ class MainWrapper extends React.Component {
           wordListIsLoaded={this.state.wordListIsLoaded}
           wordDataIsLoaded={this.state.wordDataIsLoaded}
 
-          error={this.state.movieListError}
           isLoaded={this.state.movieListIsLoaded}
           movies={this.state.movieListMovies}
 
@@ -298,11 +325,15 @@ class MainWrapper extends React.Component {
           setWordCount={(count) => this.setWordCount(count)}
           clicked={this.state.movieClicked}
 
-          error={this.state.wordListError}
           isLoaded={this.state.wordListIsLoaded}
           words={this.state.wordListWords}
 
           movieListIsLoaded={this.state.movieListIsLoaded}
+
+          handleNoSubtitles={() => this.handleNoSubtitles()}
+          imdbId={this.state.imdbId}
+          moviesWithNoSubtitles={this.state.moviesWithNoSubtitles}
+
         />
 
         <WordFrequencies
@@ -310,7 +341,6 @@ class MainWrapper extends React.Component {
           wordsRetrieved={this.state.wordsRetrieved}
           wordCount={this.state.wordCount}
 
-          error={this.state.wordDataError}
           isLoaded={this.state.wordDataIsLoaded}
           words={this.state.wordData.wordFrequencies}
           wordsAll={this.state.wordData.wordFrequenciesWithCommonWords}
@@ -323,13 +353,11 @@ class MainWrapper extends React.Component {
         />
 
         <WordLengths
-          error={this.state.wordDataError}
           isLoaded={this.state.wordDataIsLoaded}
           wordLengths={this.state.wordData.wordLengths}
         />
 
         <PhraseFrequencies
-          error={this.state.wordDataError}
           isLoaded={this.state.wordDataIsLoaded}
           phraseFrequencyRanges={this.state.wordData.phraseFrequencyRanges}
           sliderCurrentValue={this.state.sliderCurrentValue}
@@ -337,13 +365,11 @@ class MainWrapper extends React.Component {
         />
 
         <SwearWordFrequencies
-          error={this.state.wordDataError}
           isLoaded={this.state.wordDataIsLoaded}
           swearWordFrequencies={this.state.wordData.swearWordFrequencies}
         />
 
         <SwearWordFrequenciesOverTime
-          error={this.state.wordDataError}
           isLoaded={this.state.wordDataIsLoaded}
           swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
         />

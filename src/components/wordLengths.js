@@ -4,7 +4,6 @@ import { Chart as ChartJS } from 'chart.js/auto'
 
 class WordLengths extends React.Component {
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
     const wordLengths = this.props.wordLengths;
     const colours = [
@@ -16,9 +15,7 @@ class WordLengths extends React.Component {
       'rgb(153, 102, 255)',
     ]
 
-    if (error) {
-      return <div> Error: {error.message}</div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (wordLengths)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (wordLengths)");

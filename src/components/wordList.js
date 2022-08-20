@@ -19,20 +19,13 @@ class WordList extends React.Component {
   }
 
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
 
-    if (error) {
-      return <div className="word-count">
-        Error: {error.message}
-        <br />API: OpenSubtitles API
-      </div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (wordList)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (wordList)");
     } else {
-
       return (
         <></>
       )

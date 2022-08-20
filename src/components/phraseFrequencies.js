@@ -6,13 +6,10 @@ import 'rc-slider/assets/index.css';
 
 class PhraseFrequencies extends React.Component {
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
     const phraseFrequencyRanges = this.props.phraseFrequencyRanges;
 
-    if (error) {
-      return <div> Error: {error.message}</div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (phraseFrequencies)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (phraseFrequencies)");

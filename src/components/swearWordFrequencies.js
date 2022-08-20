@@ -4,7 +4,6 @@ import { Chart as ChartJS } from 'chart.js/auto'
 
 class SwearWordFrequencies extends React.Component {
   render() {
-    const error = this.props.error;
     const isLoaded = this.props.isLoaded;
     const swearWordFrequencies = this.props.swearWordFrequencies;
     const colours = [
@@ -16,9 +15,7 @@ class SwearWordFrequencies extends React.Component {
       'rgb(153, 102, 255)',
     ]
 
-    if (error) {
-      return <div> Error: {error.message}</div>
-    } else if (isLoaded === 'waiting') {
+    if (isLoaded === 'waiting') {
       console.log("waiting (swearWordFrequencies)");
     } else if (isLoaded === 'loading') {
       console.log("loading!!!!! (swearWordFrequencies)");
