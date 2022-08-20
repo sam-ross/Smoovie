@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubtilesSearchResponse {
+public class SubtitlesSearchResponse {
     private String total_pages;
     private String total_count;
     private String per_page;
