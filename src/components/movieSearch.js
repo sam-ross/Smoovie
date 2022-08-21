@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom/client';
 import PulseLoader from "react-spinners/PulseLoader"
 
 class MovieForm extends React.Component {

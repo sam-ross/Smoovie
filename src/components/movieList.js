@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from 'react-dom/client';
 import PulseLoader from "react-spinners/PulseLoader"
 
 class MovieList extends React.Component {
@@ -32,7 +31,7 @@ class MovieList extends React.Component {
     } else {
       console.log("done (movieList)")
       return (
-        < div className='section-movie-list' id="movie-list-id" >
+        <div className='section-movie-list' id="movie-list-id" >
           <h2>Step 2: Select your movie:</h2>
           <ul className="list-movies">
             {movies.map(movie => (

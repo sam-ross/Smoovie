@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import MovieList from './components/movieList';
 import MovieForm from './components/movieSearch';
 import WordList from './components/wordList';
@@ -271,54 +270,58 @@ class MainWrapper extends React.Component {
     return (
 
       <div>
-        <div className='header-and-first-section'>
-          <div className="header">
-            <p className='smoovie-title'>Smoovie</p>
-            <ul className="header-nav">
-              <li >
-                <a href='' >Documentation</a>
-              </li>
-              <li className='demo-mode'>
-                <a>Demo Mode</a>
+        <div className='gradient-background-container'>
+          <div className='header-and-first-section'>
+            <div className="header">
+              <p className='smoovie-title'>Smoovie</p>
+              <ul className="header-nav">
+                <li >
+                  <a href='' >Documentation</a>
+                </li>
+                <li className='demo-mode'>
+                  <a>Demo Mode</a>
 
-                <Toggle
-                  defaultChecked={this.state.demoMode}
-                  icons={false}
-                  onChange={() => this.handleToggleChangeDemo()} />
-              </li>
-            </ul>
+                  <Toggle
+                    defaultChecked={this.state.demoMode}
+                    icons={false}
+                    onChange={() => this.handleToggleChangeDemo()} />
+                </li>
+              </ul>
 
-          </div>
-
-          <div className="search">
-            <h1>Subtitle moovie analyser</h1>
-            <p className="under-heading">Step 1: Search for a moovie!</p>
-
-            <div className='input-container'>
-              <MovieForm
-                value={this.state.value}
-                handleChange={(e) => this.handleChange(e)}
-                handeSubmit={(e) => this.handleSubmit(e)}
-                movieListIsLoaded={this.state.movieListIsLoaded}
-                demoMode={this.state.demoMode}
-              />
             </div>
 
+            <div className="search">
+              <h1>Subtitle moovie analyser</h1>
+              <p className="under-heading">Step 1: Search for a moovie!</p>
+
+              <div className='input-container'>
+                <MovieForm
+                  value={this.state.value}
+                  handleChange={(e) => this.handleChange(e)}
+                  handeSubmit={(e) => this.handleSubmit(e)}
+                  movieListIsLoaded={this.state.movieListIsLoaded}
+                  demoMode={this.state.demoMode}
+                />
+              </div>
+
+            </div>
           </div>
         </div>
 
-        <MovieList
-          submitted={this.state.submitted}
-          getMovieList={() => this.getMovieList()}
-          handleImageClick={(e) => this.handleImageClick(e)}
-          wordListIsLoaded={this.state.wordListIsLoaded}
-          wordDataIsLoaded={this.state.wordDataIsLoaded}
+        <div className='container-light-grey'>
+          <MovieList
+            submitted={this.state.submitted}
+            getMovieList={() => this.getMovieList()}
+            handleImageClick={(e) => this.handleImageClick(e)}
+            wordListIsLoaded={this.state.wordListIsLoaded}
+            wordDataIsLoaded={this.state.wordDataIsLoaded}
 
-          isLoaded={this.state.movieListIsLoaded}
-          movies={this.state.movieListMovies}
+            isLoaded={this.state.movieListIsLoaded}
+            movies={this.state.movieListMovies}
 
-          demoMode={this.state.demoMode}
-        />
+            demoMode={this.state.demoMode}
+          />
+        </div>
 
         <WordList
           getWordList={() => this.getWordList()}
@@ -352,10 +355,12 @@ class MainWrapper extends React.Component {
           onChange={() => this.handleToggleChange()}
         />
 
-        <WordLengths
-          isLoaded={this.state.wordDataIsLoaded}
-          wordLengths={this.state.wordData.wordLengths}
-        />
+        <div className='container-dark-grey'>
+          <WordLengths
+            isLoaded={this.state.wordDataIsLoaded}
+            wordLengths={this.state.wordData.wordLengths}
+          />
+        </div>
 
         <PhraseFrequencies
           isLoaded={this.state.wordDataIsLoaded}
@@ -364,15 +369,19 @@ class MainWrapper extends React.Component {
           onChange={(e) => this.handleSliderChange(e)}
         />
 
-        <SwearWordFrequencies
-          isLoaded={this.state.wordDataIsLoaded}
-          swearWordFrequencies={this.state.wordData.swearWordFrequencies}
-        />
+        <div className='container-light-grey'>
+          <SwearWordFrequencies
+            isLoaded={this.state.wordDataIsLoaded}
+            swearWordFrequencies={this.state.wordData.swearWordFrequencies}
+          />
+        </div>
 
-        <SwearWordFrequenciesOverTime
-          isLoaded={this.state.wordDataIsLoaded}
-          swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
-        />
+        <div className='container-dark-grey'>
+          <SwearWordFrequenciesOverTime
+            isLoaded={this.state.wordDataIsLoaded}
+            swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
+          />
+        </div>
       </div >
 
 

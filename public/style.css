@@ -3,10 +3,11 @@ body {
   margin: 0;
   /* min-height: 100%; */
   height: 100%;
+  font-size: 62.5%;
 }
 
 body {
-  font: 30px "Century Gothic", Futura, sans-serif;
+  /* font: 30px "Century Gothic", Futura, sans-serif; */
 
   font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,
   Arial, sans-serif;
@@ -18,14 +19,31 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 100%;
   /* padding: 15px 40px; */
   padding: 0px 40px;
   height: 14%;
 }
 
+/* > 1200px
+@media(max-width: 1200px) {
+  body{
+    background-color: #00E0FF;
+  }
+}
+
+/* 900px - 1200px */
+/* 600px - 900px */
+/* 300px - 500px */
+/* @media(max-width: 600px) {
+  body {
+    background-color: #14FF00;
+  }
+} */
+
 h2 {
   font-weight: 200;
-  font-size: 40px;
+  font-size: 4rem;
 }
 
 #root {
@@ -33,7 +51,7 @@ h2 {
   justify-content: center;
   flex-direction: column;
   flex-grow: 1;
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .container {
@@ -43,17 +61,22 @@ h2 {
   flex-direction: column;
 }
 
-.header-and-first-section {
-  height: 100vh;
+.gradient-background-container {
   background: linear-gradient(238.72deg, #0044A9 0%, #F700A3 100%), radial-gradient(100% 188.01% at 76.14% 0%, #43DDFF 0%, #FF0000 100%), linear-gradient(0deg, #DB00FF 0%, #14FF00 100%), radial-gradient(59.2% 100% at 50% 100%, #6A00D5 0%, #00E0FF 100%), radial-gradient(100% 148.07% at 0% 0%, #FF9900 0%, #001AFF 100%);
   background-blend-mode: hard-light, overlay, color-burn, color-burn, normal;
+}
+
+.header-and-first-section {
+  height: 100vh;
   font-family: Poppins, sans-serif;
   color: #fff;
+  max-width: 130rem;
+  margin: 0 auto;
 }
 
 .smoovie-title {
   color: #fff;
-  font-size: 50px;
+  font-size: 5rem;
   font-weight: 700;
   margin:0;
 }
@@ -75,7 +98,7 @@ h2 {
 
 .header-nav a {
   color: #fff;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: 400;
   text-decoration: none;
 }
@@ -96,7 +119,7 @@ h2 {
 
 h1 {
   color: #fff;
-  font-size: 70px;
+  font-size: 7rem;
   font-weight: 700;
   text-shadow: 0 2px 4px rgb(13 0 77 / 8%), 0 3px 6px rgb(13 0 77 / 8%), 0 8px 16px rgb(13 0 77 / 8%);
   margin: 0px;
@@ -104,7 +127,7 @@ h1 {
 
 .under-heading {
   color: #fff;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 300;
   margin:0;
 }
@@ -135,7 +158,7 @@ input{
   width: 20px;
   color: #525252;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 100;
   letter-spacing: 1px;
   border: none;
@@ -183,34 +206,56 @@ form {
 
 
 .section-movie-list {
-  background-color: rgba(230, 230, 230, 0.24);
   padding: 30px 50px 25px 50px;
+  max-width: 130rem;
+  margin: auto;
 }
 
 .section-words-frequency {
-  background-color: #fff;
   padding: 18px 50px 50px 50px;
+  
+  max-width: 130rem;
+  margin: auto;
 }
 
 .section-words-lengths {
-  background-color: rgba(202, 202, 202, 0.24);
   padding: 50px 50px 0px 50px;
+  
+  max-width: 130rem;
+  margin: auto;
 }
 
 .section-phrase-frequency {
-  background-color: rgba(255, 255, 255, 0.24);
   padding: 18px 50px 50px 50px;
+  
+  max-width: 130rem;
+  margin: auto;
 }
 
 .section-words-swear {
-  background-color: rgba(230, 230, 230, 0.24);
   padding: 50px 50px 0px 50px;
+  
+  max-width: 130rem;
+  margin: auto;
 }
 
 .section-words-swear-time {
-  background-color: rgba(202, 202, 202, 0.24);
   padding: 18px 50px 50px 50px;
+  
+  max-width: 130rem;
+  margin: auto;
 }
+
+.container-light-grey {
+  background-color: rgba(230, 230, 230, 0.24);
+}
+
+.container-dark-grey {
+  background-color: rgba(202, 202, 202, 0.24);
+}
+
+
+
 
 .h2-word-lengths {
   margin: 0px;
@@ -354,33 +399,14 @@ img {
 
 .word-count-outer {
   display: flex;
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .word-count {
   margin-left: 8px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Toggle section */
 .react-toggle {
   touch-action: pan-x;
 
