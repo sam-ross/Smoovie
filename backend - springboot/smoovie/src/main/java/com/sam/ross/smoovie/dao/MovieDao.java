@@ -56,6 +56,35 @@ public class MovieDao {
     }
 
     /**
+     * Calls the "login" endpoint in the OpenSubtitles API to log in with my account. A bearer token is included
+     * in the response, which is needed later, for calling the "download subtitles" endpoint
+     *
+     * @param apiKey   - OpenSubtitles API key
+     * @param username - OpenSubtitles username
+     * @param password - OpenSubtitles password
+     * @return JSON response string to be used in the service to extract the bearer token which will be used later
+     * to call the "download subtitles" endpoint
+     */
+    public String logInAccount(String apiKey, String username, String password) {
+        String requestBody = format("{\"password\": \"%s\", \"username\": \"%s\"}", password, username);
+
+        HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(OPEN_SUBTITLES_BASE_URL + "/login"))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Api-Key", apiKey)
+                .header("Content-type", "application/json")
+                .header("Accept", "application/json")
+                .build();
+
+        HttpResponse<String> response = getHttpResponse(client, request);
+
+        System.out.println(response.body());
+
+        return response.body();
+    }
+
+    /**
      * Calls the "download subtitles" endpoint in the OpenSubtitles API to retrieve a download link which will
      * be used later to download the subtitles SRT file
      *
@@ -65,12 +94,13 @@ public class MovieDao {
      * @return JSON response string to be used in the service to extract the actual download link which will be
      * used later to download the subtitles file
      */
-    public String requestForDownload(String fileId, String apiKey) {
+    public String requestForDownload(String fileId, String apiKey, String bearerToken) {
         String requestBody = format("{\"file_id\": %s}", fileId);
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(OPEN_SUBTITLES_BASE_URL + "/download"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Authorization", format("Bearer %s", bearerToken))
                 .header("Api-Key", apiKey)
                 .header("Content-type", "application/json")
                 .header("Accept", "application/json")

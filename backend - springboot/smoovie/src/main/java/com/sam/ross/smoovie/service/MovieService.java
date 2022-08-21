@@ -8,6 +8,7 @@ import com.sam.ross.smoovie.exceptions.GeneralException;
 import com.sam.ross.smoovie.objects.IMDbMovie;
 import com.sam.ross.smoovie.objects.IMDbSearchResponse;
 import com.sam.ross.smoovie.objects.subtitles.DownloadRequestResponse;
+import com.sam.ross.smoovie.objects.subtitles.LoginResponse;
 import com.sam.ross.smoovie.objects.subtitles.SubtitlesSearchResponse;
 import com.sam.ross.smoovie.objects.words.WordData;
 import com.sam.ross.smoovie.objects.words.WordList;
@@ -40,7 +41,7 @@ public class MovieService {
         return searchResponse.getResults();
     }
 
-    public WordList getWordList(String imdbId, String apiKey) {
+    public WordList getWordList(String imdbId, String apiKey, String username, String password) {
         if (imdbId.length() > 1 && imdbId.charAt(0) == 't' && imdbId.charAt(1) == 't') {
             imdbId = imdbId.substring(2);
         }
@@ -50,8 +51,11 @@ public class MovieService {
         String fileId = getFileId(imdbId, apiKey);
         System.out.println(fileId);
 
+        // login
+        String bearerToken = getLoginBearerToken(apiKey, username, password);
+
         // get download link
-        String downloadLink = getDownloadLink(fileId, apiKey);
+        String downloadLink = getDownloadLink(fileId, apiKey, bearerToken);
         System.out.println(downloadLink);
 
         // use download link
@@ -95,8 +99,27 @@ public class MovieService {
 
     }
 
-    private String getDownloadLink(String fileId, String apiKey) {
-        String responseBody = dao.requestForDownload(fileId, apiKey);
+    private String getLoginBearerToken(String apiKey, String username, String password) {
+        String responseBody = dao.logInAccount(apiKey, username, password);
+        ObjectMapper mapper = new ObjectMapper();
+        LoginResponse loginResponse;
+
+        try {
+            loginResponse = mapper.readValue(responseBody, LoginResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new GeneralException("Error parsing JSON Object into SubtitlesSearchResponse class");
+        }
+
+        String bearerToken = loginResponse.getToken();
+        if (bearerToken.length() < 2) {
+            throw new GeneralException("Invalid bearer token received from OpenSubtitles API login endpoint");
+        }
+
+        return bearerToken;
+    }
+
+    private String getDownloadLink(String fileId, String apiKey, String bearerToken) {
+        String responseBody = dao.requestForDownload(fileId, apiKey, bearerToken);
         ObjectMapper mapper = new ObjectMapper();
         DownloadRequestResponse downloadRequestResponse;
 

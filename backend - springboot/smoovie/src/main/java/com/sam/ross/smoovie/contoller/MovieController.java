@@ -23,6 +23,8 @@ public class MovieController {
 
     private final String apiKeyImdb = "";
     private final String apiKeyOpenSubtitles = "";
+    private final String username = "";
+    private final String password = "";
 
     @CrossOrigin
     @GetMapping("/ping")
@@ -53,7 +55,7 @@ public class MovieController {
     @CrossOrigin
     @GetMapping("/words/{imdbId}")
     public ResponseEntity<WordList> getWordList(@PathVariable String imdbId) {
-        WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles);
+        WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles, username, password);
 
 //        WordList words = WordList.builder().words(Utils.getVanillaWords()).build();
 //        if (imdbId.equals("tt0110914")) {
