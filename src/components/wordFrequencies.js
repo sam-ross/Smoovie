@@ -91,7 +91,7 @@ class WordFrequencies extends React.Component {
 
 
       return (
-        <div className='section-words-frequency' id="word-frequency">
+        <section className='section-words-frequency' id="word-frequency">
           <div className='words-frequency-header'>
             <h2>Word Frequencies</h2>
             <div className='word-count-outer'>
@@ -112,10 +112,10 @@ class WordFrequencies extends React.Component {
             </label>
           </div>
 
-          <div className="chart-word-frequencies">
+          <div className="chart-frequencies">
             <Bar data={chartData} options={options} />
           </div>
-        </div>
+        </section>
       )
 
     }

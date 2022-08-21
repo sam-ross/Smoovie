@@ -70,10 +70,10 @@ class SwearWordFrequenciesOverTime extends React.Component {
       }
 
       return (
-        <div className='section-words-swear-time'>
+        <section className='section-words-swear-time'>
           <h2>Swear Word Frequencies throughout the Movie</h2>
           <Line data={chartData} options={options} />
-        </div>
+        </section>
       )
 
     }

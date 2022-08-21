@@ -31,13 +31,13 @@ class MovieList extends React.Component {
     } else {
       console.log("done (movieList)")
       return (
-        <div className='section-movie-list' id="movie-list-id" >
+        <section className="section-movie-list" id="movie-list-id" >
           <h2>Step 2: Select your movie:</h2>
           <ul className="list-movies">
             {movies.map(movie => (
               <li key={movie.id} className="list-item-movies">
                 <img src={movie.image} alt={movie.id} onClick={this.props.handleImageClick} className="image-movies"></img>
-                <p className="movie-title">{movie.title} {movie.description.substring(0, 6)}</p>
+                <p className="movie-title">{movie.title} <br />{movie.description.substring(0, 6)}</p>
               </li>
             ))
             }
@@ -49,7 +49,7 @@ class MovieList extends React.Component {
               loading={(wordListIsLoading || wordDataIsLoading)}
             />
           </div>
-        </div >
+        </section >
       )
     }
   }

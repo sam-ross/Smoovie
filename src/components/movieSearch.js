@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PulseLoader from "react-spinners/PulseLoader"
 
 class MovieForm extends React.Component {

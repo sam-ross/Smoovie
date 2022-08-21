@@ -1,12 +1,23 @@
-/* > 1200px */
-/* @media(max-width: 1200px) {
-  body{
-    background-color: #00E0FF;
+/* 1 rem = 1 em = 16px */
+
+
+/*
+  Below 1344px - smaller desktops
+*/
+@media(max-width: 85em) {
+  html {
+    font-size: 56.25%;
   }
-  .image-movies {
-    width: 150px;
+}
+
+/*
+  Below 1200px - tablets
+*/
+@media(max-width: 75em) {
+  html {
+    font-size: 50%;
   }
-} */
+}
 
 /* 900px - 1200px */
 /* 600px - 900px */

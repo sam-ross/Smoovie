@@ -58,19 +58,19 @@ class SwearWordFrequencies extends React.Component {
         if (Object.keys(swearWordFrequencies).length !== 0) {
           return <Pie data={chartData} options={options} />;
         }
-        return <h2 className="swear-word-no">* No swear words in this movie! *</h2 >
+        return <h2 className="swear-word-no">No swear words in this movie!</h2 >
       }
 
 
       return (
-        <div className='section-words-swear'>
+        <section className='section-words-swear'>
           <h2 className="h2-swear-frequencies">Swear Word Frequencies</h2>
           <div className="chart-outer">
             <div className="chart-circle">
               {swearWordsFunc()}
             </div>
           </div>
-        </div>
+        </section>
       )
 
     }

@@ -78,7 +78,7 @@ class PhraseFrequencies extends React.Component {
 
       return (
 
-        <div className='section-phrase-frequency'>
+        <section className='section-phrase-frequency'>
           <h2>Phrase Frequencies</h2>
           <div className='slider-div'>
             <span className="slider-title">Length of phrase</span>
@@ -90,10 +90,10 @@ class PhraseFrequencies extends React.Component {
               onChange={this.props.onChange}
             />
           </div>
-          <div className="chart-phrase-frequencies">
+          <div className="chart-frequencies">
             <Bar data={chartData} options={options} />
           </div>
-        </div>
+        </section>
       )
 
     }

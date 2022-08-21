@@ -43,6 +43,11 @@ class WordLengths extends React.Component {
         plugins: {
           legend: {
             position: 'right',
+            labels: {
+              font: {
+                // size: 1.4rem,
+              }
+            }
           }
         },
         layout: {
@@ -54,14 +59,14 @@ class WordLengths extends React.Component {
 
       // return chart
       return (
-        <div className='section-words-lengths'>
+        <section className='section-words-lengths'>
           <h2 className="h2-word-lengths">Word Lengths</h2>
           <div className="chart-outer">
             <div className="chart-circle">
               <Doughnut data={chartData} options={options} />
             </div>
           </div>
-        </div>
+        </section>
       )
 
     }
