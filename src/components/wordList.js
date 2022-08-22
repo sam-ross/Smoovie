@@ -12,9 +12,7 @@ class WordList extends React.Component {
     }
     if ((prevProps.movieListIsLoaded === 'loading' || prevProps.movieListIsLoaded === 'waiting') && this.props.movieListIsLoaded === 'done') {
       console.log("Wow - movie list rendered");
-      setTimeout(function () {
-        document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });
-      }, 400);
+      document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });
     }
   }
 

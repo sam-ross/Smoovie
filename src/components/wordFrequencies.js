@@ -2,6 +2,7 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from 'chart.js/auto'
 import Toggle from 'react-toggle'
+import { defaults } from "chart.js";
 
 class WordFrequencies extends React.Component {
 
@@ -63,12 +64,29 @@ class WordFrequencies extends React.Component {
         }]
       }
 
+
+
       let options = {
         scales: {
           x: {
             title: {
               display: true,
-              text: 'Frequency'
+              text: 'Frequency',
+              font: function (context) {
+                console.log(context.chart.width);
+
+                // Responsive text resizing for all the charts
+                if (context.chart.width > 1290) {          // > 1344px 
+                  defaults.font.size = 12;
+                } else if (context.chart.width > 1160) {   // > 1232px
+                  defaults.font.size = 11;
+                } else if (context.chart.width > 900) {   // > 975
+                  defaults.font.size = 10;
+                } else if (context.chart.width > 640) {   // > 
+                  defaults.font.size = 9;
+                }
+                return;
+              }
             },
             grid: {
               display: true
@@ -77,21 +95,20 @@ class WordFrequencies extends React.Component {
           y: {
             grid: {
               display: false
-            }
-          },
+            },
+          }
         },
         plugins: {
           legend: {
             display: false
-          }
+          },
         },
         indexAxis: 'y',
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
       }
 
-
       return (
-        <section className='section-words-frequency' id="word-frequency">
+        <section className='section-words-frequency' id="word-frequency" >
           <div className='words-frequency-header'>
             <h2>Word Frequencies</h2>
             <div className='word-count-outer'>
@@ -115,7 +132,7 @@ class WordFrequencies extends React.Component {
           <div className="chart-frequencies">
             <Bar data={chartData} options={options} />
           </div>
-        </section>
+        </section >
       )
 
     }

@@ -2,23 +2,54 @@
 
 
 /*
-  Below 1344px - smaller desktops
+  Below 1375px - smaller desktops
 */
-@media(max-width: 85em) {
-  html {
+@media(max-width: 86em) {
+  /* html {
     font-size: 56.25%;
+  } */
+
+  .header-and-first-section {
+    max-width: 73em;
   }
+
+  section {
+    max-width: 73em;
+  }
+
 }
 
 /*
-  Below 1200px - tablets
+  Below 1232px - tablets landscape
 */
-@media(max-width: 75em) {
+@media(max-width: 77em) {
+  html {
+    font-size: 56.25%;
+  }
+
+  .header-and-first-section {
+    max-width: 68em;
+  }
+
+  section {
+    max-width: 68em;
+  }
+
+  /* .chart-frequencies {
+    height: 1100px;
+  } */
+}
+
+/* Below 960px - tablets */
+@media(max-width: 61rem) {
   html {
     font-size: 50%;
   }
+
+  /* .chart-frequencies {
+    height: 1000px;
+  } */
 }
 
-/* 900px - 1200px */
 /* 600px - 900px */
 /* 300px - 500px */

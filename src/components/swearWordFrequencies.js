@@ -39,13 +39,20 @@ class SwearWordFrequencies extends React.Component {
         responsive: true,
         plugins: {
           legend: {
-            // display: false,
-            position: 'right'
+            position: 'right',
+            // labels: {
+            //   font: function (context) {
+            //     if (context.chart.width > 590) {          // > 1344px 
+            //       defaults.font.size = 20;
+            //     } else if (context.chart.width > 530) {   // > 1232px
+            //       defaults.font.size = 12;
+            //     } else if (context.chart.width > 410) {   // > 
+            //       defaults.font.size = 5;
+            //     }
+            //     return;
+            //   }
+            // }
           },
-          // title: {
-          //   display: true,
-          //   text: 'Count of different word lengths'
-          // }
         },
         layout: {
           padding: {

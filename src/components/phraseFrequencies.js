@@ -80,15 +80,17 @@ class PhraseFrequencies extends React.Component {
 
         <section className='section-phrase-frequency'>
           <h2>Phrase Frequencies</h2>
-          <div className='slider-div'>
+          <div className='slider-outer-div'>
             <span className="slider-title">Length of phrase</span>
-            <Slider
-              marks={[2, 3, 4, 5, 6, 7, 8]}
-              min={0}
-              max={6}
-              defaultValue={1}
-              onChange={this.props.onChange}
-            />
+            <div className="slider-div">
+              <Slider
+                marks={[2, 3, 4, 5, 6, 7, 8]}
+                min={0}
+                max={6}
+                defaultValue={1}
+                onChange={this.props.onChange}
+              />
+            </div>
           </div>
           <div className="chart-frequencies">
             <Bar data={chartData} options={options} />

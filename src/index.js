@@ -280,11 +280,12 @@ class MainWrapper extends React.Component {
                 </li>
                 <li className='demo-mode'>
                   <a>Demo Mode</a>
-
-                  <Toggle
-                    defaultChecked={this.state.demoMode}
-                    icons={false}
-                    onChange={() => this.handleToggleChangeDemo()} />
+                  <div className="toggle-center">
+                    <Toggle
+                      defaultChecked={this.state.demoMode}
+                      icons={false}
+                      onChange={() => this.handleToggleChangeDemo()} />
+                  </div>
                 </li>
               </ul>
 

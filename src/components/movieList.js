@@ -36,7 +36,11 @@ class MovieList extends React.Component {
           <ul className="list-movies">
             {movies.map(movie => (
               <li key={movie.id} className="list-item-movies">
-                <img src={movie.image} alt={movie.id} onClick={this.props.handleImageClick} className="image-movies"></img>
+                {/* By initially setting the image width and height in the html, this means on first calculation,
+                the images will be 200x300 then the css property for height auto will adjust the height of the 
+                image to keep it's aspect ratio. This is instead of the height being 0 on first calculation,
+                so this allows the scrollToView fuction to work more effectively. */}
+                <img src={movie.image} alt={movie.id} onClick={this.props.handleImageClick} className="image-movies" width={200} height={300}></img>
                 <p className="movie-title">{movie.title} <br />{movie.description.substring(0, 6)}</p>
               </li>
             ))

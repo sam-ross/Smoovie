@@ -27,7 +27,7 @@ class MovieForm extends React.Component {
             </label>
           </fieldset>
         </form>
-        <div className='loading-spinner'>
+        <div className='loading-row-search'>
           <PulseLoader
             size={15}
             color={"#fff"}

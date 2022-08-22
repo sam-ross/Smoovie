@@ -6,9 +6,7 @@ class SwearWordFrequenciesOverTime extends React.Component {
   componentDidUpdate(prevProps) {
     if ((prevProps.isLoaded === "loading" || prevProps.isLoaded === "waiting") && this.props.isLoaded === "done") {
       console.log("xxxx done");
-      setTimeout(function () {
-        document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
-      }, 400);
+      document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
     }
   }
 

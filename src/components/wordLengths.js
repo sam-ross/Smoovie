@@ -43,11 +43,6 @@ class WordLengths extends React.Component {
         plugins: {
           legend: {
             position: 'right',
-            labels: {
-              font: {
-                // size: 1.4rem,
-              }
-            }
           }
         },
         layout: {
