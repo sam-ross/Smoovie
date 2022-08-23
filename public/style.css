@@ -14,29 +14,6 @@ body {
   overflow-x: hidden;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 12vh;
-}
-
-/* > 1200px
-@media(max-width: 1200px) {
-  body{
-    background-color: #00E0FF;
-  }
-}
-
-/* 900px - 1200px */
-/* 600px - 900px */
-/* 300px - 500px */
-/* @media(max-width: 600px) {
-  body {
-    background-color: #14FF00;
-  }
-} */
-
 h2 {
   font-weight: 200;
   font-size: 4rem;
@@ -50,13 +27,6 @@ h2 {
   font-size: 1.6rem;
 }
 
-/* .container {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-} */
-
 .gradient-background-container {
   background: linear-gradient(238.72deg, #0044A9 0%, #F700A3 100%), radial-gradient(100% 188.01% at 76.14% 0%, #43DDFF 0%, #FF0000 100%), linear-gradient(0deg, #DB00FF 0%, #14FF00 100%), radial-gradient(59.2% 100% at 50% 100%, #6A00D5 0%, #00E0FF 100%), radial-gradient(100% 148.07% at 0% 0%, #FF9900 0%, #001AFF 100%);
   background-blend-mode: hard-light, overlay, color-burn, color-burn, normal;
@@ -68,6 +38,15 @@ h2 {
   color: #fff;
   max-width: 130rem;
   margin: 0 auto;
+  padding: 0 5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
+  padding: 3vh 0;
 }
 
 .smoovie-title {
@@ -79,24 +58,9 @@ h2 {
 
 .header-nav {
   padding-left: 0;
-  width: 40rem;
+  width: 25rem;
   display: flex;
-  justify-content: space-around;
-}
-
-.demo-mode {
-  display: flex;
-}
-
-.demo-mode a {
-  margin-right:0.8rem;
-}
-
-.toggle-center {
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .header-nav a {
@@ -112,6 +76,21 @@ h2 {
 .header-nav a:hover {
   /* color: #8f0055;
   text-decoration:underline; */
+}
+
+.demo-mode {
+  display: flex;
+}
+
+.demo-mode a {
+  margin-right:0.8rem;
+}
+
+.toggle-center {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
 }
 
 .search {
@@ -179,7 +158,6 @@ form {
 input{
   position: relative;
   padding: 1.5rem 4rem 1.5rem 2rem;
-  width: 2rem;
   color: #525252;
   text-transform: uppercase;
   font-size: 1.6rem;
@@ -222,6 +200,8 @@ i:hover{
 /* SECTIONS */
 
 section {
+  padding-left: 5rem;
+  padding-right: 5rem;
   max-width: 130rem;
   margin: auto;
 }
@@ -231,7 +211,8 @@ section {
 }
 
 .section-words-frequency {
-  padding: 1.8rem 0 5rem 0;
+  padding-top: 1.8rem;
+  padding-bottom: 5rem;
 }
 
 .section-words-lengths {
@@ -239,7 +220,8 @@ section {
 }
 
 .section-phrase-frequency {
-  padding: 1.8rem 0 5rem 0;
+  padding-top: 1.8rem;
+  padding-bottom: 5rem;
 }
 
 .section-words-swear {
@@ -247,7 +229,8 @@ section {
 }
 
 .section-words-swear-time {
-  padding: 1.8rem 0 5rem 0;
+  padding-top: 1.8rem;
+  padding-bottom: 5rem;
 }
 
 /* CONTAINER COLOURS */
@@ -354,18 +337,20 @@ img {
 .slider-outer-div {
   padding-bottom: 3rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   font-size: 1.6rem;
 }
 
 .slider-div {
-  width: 112rem;
+  width: 80%;
+  padding: 0 1rem;
 }
 
 .slider-title {
-  width: 15rem;
-  padding-right: 0.2rem;
+  color: #999999;
+  padding-bottom: 0.2rem;
 }
 
 .rc-slider-mark-text {

@@ -118,8 +118,6 @@ class MainWrapper extends React.Component {
     this.setState({ sliderCurrentValue: newPosition });
   }
 
-
-
   getMovieList() {
     console.log("Getting movie list (parent): " + this.state.value);
     console.log("Demo mode: " + this.state.demoMode);
@@ -275,9 +273,6 @@ class MainWrapper extends React.Component {
             <div className="header">
               <p className='smoovie-title'>Smoovie</p>
               <ul className="header-nav">
-                <li >
-                  <a href='' >Documentation</a>
-                </li>
                 <li className='demo-mode'>
                   <a>Demo Mode</a>
                   <div className="toggle-center">

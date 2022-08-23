@@ -74,16 +74,29 @@ class WordFrequencies extends React.Component {
               text: 'Frequency',
               font: function (context) {
                 console.log(context.chart.width);
+                console.log("DEFAULTS: " + defaults);
+
+                let d = defaults;
 
                 // Responsive text resizing for all the charts
                 if (context.chart.width > 1290) {          // > 1344px 
                   defaults.font.size = 12;
+                  defaults.plugins.legend.labels.padding = 12;
                 } else if (context.chart.width > 1160) {   // > 1232px
                   defaults.font.size = 11;
-                } else if (context.chart.width > 900) {   // > 975
-                  defaults.font.size = 10;
+                  defaults.plugins.legend.labels.padding = 12;
+                } else if (context.chart.width > 860) {   // > 975
+                  defaults.font.size = 11;
+                  defaults.plugins.legend.labels.padding = 10;
                 } else if (context.chart.width > 640) {   // > 
-                  defaults.font.size = 9;
+                  defaults.font.size = 11;
+                  defaults.plugins.legend.labels.padding = 8;
+                } else if (context.chart.width > 460) {   // > 
+                  defaults.font.size = 11;
+                  defaults.plugins.legend.labels.padding = 4;
+                } else if (context.chart.width > 100) {
+                  defaults.font.size = 10;
+                  defaults.plugins.legend.labels.padding = 2;
                 }
                 return;
               }

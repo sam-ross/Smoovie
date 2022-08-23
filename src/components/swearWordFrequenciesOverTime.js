@@ -50,7 +50,7 @@ class SwearWordFrequenciesOverTime extends React.Component {
           x: {
             title: {
               display: true,
-              text: 'Sections'
+              text: 'Movie Sections'
             }
           },
           y: {
@@ -69,7 +69,7 @@ class SwearWordFrequenciesOverTime extends React.Component {
 
       return (
         <section className='section-words-swear-time'>
-          <h2>Swear Word Frequencies throughout the Movie</h2>
+          <h2>Swear Words Over Time</h2>
           <Line data={chartData} options={options} />
         </section>
       )

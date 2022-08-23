@@ -4,52 +4,137 @@
 /*
   Below 1375px - smaller desktops
 */
-@media(max-width: 86em) {
-  /* html {
-    font-size: 56.25%;
-  } */
-
-  .header-and-first-section {
-    max-width: 73em;
-  }
-
-  section {
-    max-width: 73em;
-  }
-
-}
 
 /*
-  Below 1232px - tablets landscape
+  Below 1200px - tablets landscape
 */
-@media(max-width: 77em) {
-  html {
-    font-size: 56.25%;
-  }
-
-  .header-and-first-section {
-    max-width: 68em;
-  }
-
-  section {
-    max-width: 68em;
-  }
-
-  /* .chart-frequencies {
-    height: 1100px;
-  } */
-}
-
-/* Below 960px - tablets */
-@media(max-width: 61rem) {
+@media(max-width: 75em) {
   html {
     font-size: 50%;
   }
 
-  /* .chart-frequencies {
-    height: 1000px;
-  } */
+  .list-movies {
+    flex-wrap: wrap;
+    gap: 2em 2em;
+  }
+
+  .chart-frequencies {
+    height: 1050px;
+  }
 }
 
-/* 600px - 900px */
-/* 300px - 500px */
+/* Below 944px - tablets */
+@media(max-width: 59em) {
+
+  h1 {
+    font-size: 3.8em;
+  }
+
+  /* img {
+    width: 13em;
+  } */
+
+  /* .list-item-movies {
+    width: 13em; 
+  } */
+  
+  .list-movies {
+    margin-top: 4em; 
+    flex-wrap: wrap;
+    gap: 2em 2em;
+  }
+
+  .loading-row {
+    height: 4em;
+  }
+
+  .chart-frequencies {
+    height: 950px;
+  }
+
+}
+
+/* Below 704px - smaller tablets */
+@media(max-width: 44em) {
+  h1 {
+    text-align: center;
+  }
+
+  .chart-circle {
+    width: 35em;
+  }
+
+  #phrase-frequencies {
+    /* width: 80%; */
+  }
+
+  #phrase-frequencies-h2 {
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+  }
+
+  .section-phrase-frequency {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
+
+
+
+}
+
+/* Below 544px - phones */
+@media(max-width: 34em) {
+  html {
+    font-size: 43.75%;
+  }
+
+  input {
+    width: 15em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .chart-circle {
+    width: 32.5em;
+  }
+
+  /* .section-phrase-frequency {
+    padding-left: 1em;
+    padding-right: 1em;
+  } */
+
+
+}
+
+/* Below 368px - very narrow */
+@media(max-width: 23em) {
+  h2 {
+    font-size: 1.9em;
+  }
+
+  .chart-circle {
+    width: 28em;
+  }
+
+  .demo-mode {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+  }
+
+  .word-count-outer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .word-count {
+    margin :0;
+  }
+
+  .chart-frequencies {
+    height: 850px;
+  }
+}
+

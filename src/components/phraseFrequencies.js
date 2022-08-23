@@ -64,6 +64,34 @@ class PhraseFrequencies extends React.Component {
           y: {
             grid: {
               display: false
+            },
+            ticks: {
+              font: {
+                size: function (context) {
+                  // console.log(context.chart.width);
+                  console.log(sliderCurrentValue);
+
+                  // Responsive text resizing for all the charts
+                  if (sliderCurrentValue > 4) {
+                    if (context.chart.width > 1290) {          // > 1344px 
+                      return 12;
+                    } else if (context.chart.width > 1160) {   // > 1232px
+                      return 11;
+                    } else if (context.chart.width > 860) {   // > 975
+                      return 11;
+                    } else if (context.chart.width > 640) {   // > 
+                      return 11;
+                    } else if (context.chart.width > 450) {   // > 
+                      return 7;
+                    } else if (context.chart.width > 325) {
+                      return 6;
+                    } else if (context.chart.width > 100) {
+                      return 5;
+                    }
+                  }
+                  return;
+                }
+              }
             }
           },
         },
@@ -79,7 +107,7 @@ class PhraseFrequencies extends React.Component {
       return (
 
         <section className='section-phrase-frequency'>
-          <h2>Phrase Frequencies</h2>
+          <h2 id="phrase-frequencies-h2">Phrase Frequencies</h2>
           <div className='slider-outer-div'>
             <span className="slider-title">Length of phrase</span>
             <div className="slider-div">
@@ -92,7 +120,7 @@ class PhraseFrequencies extends React.Component {
               />
             </div>
           </div>
-          <div className="chart-frequencies">
+          <div className="chart-frequencies" id="phrase-frequencies">
             <Bar data={chartData} options={options} />
           </div>
         </section>
