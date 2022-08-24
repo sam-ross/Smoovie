@@ -76,7 +76,7 @@ public class MovieController {
         // temporary code for creating the demo files
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File("pulp-fiction-words.json"), words);
+            mapper.writeValue(new File("fight-club-words.json"), words);
         } catch (Exception e) {
             throw new ServiceProxyException();
         }
@@ -102,7 +102,7 @@ public class MovieController {
         // temporary code for creating the demo files
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File("pulp-fiction-data.json"), wordData);
+            mapper.writeValue(new File("fight-club-data.json"), wordData);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
