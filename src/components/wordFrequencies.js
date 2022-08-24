@@ -73,11 +73,6 @@ class WordFrequencies extends React.Component {
               display: true,
               text: 'Frequency',
               font: function (context) {
-                console.log(context.chart.width);
-                console.log("DEFAULTS: " + defaults);
-
-                let d = defaults;
-
                 // Responsive text resizing for all the charts
                 if (context.chart.width > 1290) {          // > 1344px 
                   defaults.font.size = 12;

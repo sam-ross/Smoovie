@@ -15,7 +15,7 @@
 
   .list-movies {
     flex-wrap: wrap;
-    gap: 2em 2em;
+    gap: 1em 2em;
   }
 
   .chart-frequencies {
@@ -40,8 +40,6 @@
   
   .list-movies {
     margin-top: 4em; 
-    flex-wrap: wrap;
-    gap: 2em 2em;
   }
 
   .loading-row {
@@ -68,17 +66,10 @@
     /* width: 80%; */
   }
 
-  #phrase-frequencies-h2 {
-    padding-left: 0.75em;
-    padding-right: 0.75em;
-  }
-
-  .section-phrase-frequency {
-    padding-left: 1.5em;
-    padding-right: 1.5em;
-  }
-
-
+  /* #phrase-frequencies-h2 {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  } */
 
 }
 
@@ -97,14 +88,21 @@
   }
 
   .chart-circle {
-    width: 32.5em;
+    width: 30em;
   }
 
-  /* .section-phrase-frequency {
-    padding-left: 1em;
-    padding-right: 1em;
-  } */
+  #phrase-frequencies-h2 {
+    padding-left: 0.8em;
+  }
 
+  .section-phrase-frequency {
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+  }
+
+  .swear-word-no {
+    font-size: 1.5em;
+  }
 
 }
 
@@ -118,7 +116,7 @@
     width: 28em;
   }
 
-  .demo-mode {
+  .header-nav {
     display: flex;
     flex-direction: column; 
     align-items: center;

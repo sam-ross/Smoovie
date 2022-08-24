@@ -1,0 +1,41 @@
+{
+  "movies": [
+      {
+        "id": "tt0110912",
+        "resultType": "Title",
+        "image": "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_Ratio0.7273_AL_.jpg",
+        "title": "Pulp Fiction",
+        "description": "(1994)"
+      },
+      {
+        "id": "tt0468569",
+        "resultType": "Title",
+        "image": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_Ratio0.7273_AL_.jpg",
+        "title": "The Dark Knight",
+        "description": "(2008)"
+      },
+
+      {
+        "id": "tt0993846",
+        "resultType": "Title",
+        "image": "https://m.media-amazon.com/images/M/MV5BMjIxMjgxNTk0MF5BMl5BanBnXkFtZTgwNjIyOTg2MDE@._V1_Ratio0.7273_AL_.jpg",
+        "title": "The Wolf of Wall Street",
+        "description": "(2013)"
+      },
+      {
+        "id": "tt0137523",
+        "resultType": "Title",
+        "image": "https://m.media-amazon.com/images/M/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_Ratio0.7273_AL_.jpg",
+        "title": "Fight Club",
+        "description": "(1999)"
+      },
+      {
+        "id": "tt0298148",
+        "resultType": "Title",
+        "image": "https://m.media-amazon.com/images/M/MV5BMDJhMGRjN2QtNDUxYy00NGM3LThjNGQtMmZiZTRhNjM4YzUxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_Ratio0.7273_AL_.jpg",
+        "title": "Shrek 2",
+        "description": "(2004)"
+      }
+  ]
+}
+

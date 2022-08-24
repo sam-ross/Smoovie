@@ -5,6 +5,15 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 class PhraseFrequencies extends React.Component {
+  componentDidMount() {
+    window.addEventListener('resize', this.props.changeSliderValue);
+    this.props.changeSliderValue(); // ensures that the initial values are correct based on the inital width
+  }
+
+  componentDidUpdate() {
+    this.props.changeSliderValue(); // ensures that the initial values are correct based on the inital width
+  }
+
   render() {
     const isLoaded = this.props.isLoaded;
     const phraseFrequencyRanges = this.props.phraseFrequencyRanges;
@@ -68,27 +77,26 @@ class PhraseFrequencies extends React.Component {
             ticks: {
               font: {
                 size: function (context) {
-                  // console.log(context.chart.width);
-                  console.log(sliderCurrentValue);
-
                   // Responsive text resizing for all the charts
-                  if (sliderCurrentValue > 4) {
-                    if (context.chart.width > 1290) {          // > 1344px 
-                      return 12;
-                    } else if (context.chart.width > 1160) {   // > 1232px
-                      return 11;
-                    } else if (context.chart.width > 860) {   // > 975
-                      return 11;
-                    } else if (context.chart.width > 640) {   // > 
-                      return 11;
-                    } else if (context.chart.width > 450) {   // > 
-                      return 7;
-                    } else if (context.chart.width > 325) {
-                      return 6;
-                    } else if (context.chart.width > 100) {
-                      return 5;
-                    }
+                  // if (sliderCurrentValue > 3) {
+                  if (context.chart.width > 1290) {          // > 1344px 
+                    return 12;
+                  } else if (context.chart.width > 1160) {   // > 1232px
+                    return 11;
+                  } else if (context.chart.width > 860) {   // > 975
+                    return 11;
+                  } else if (context.chart.width > 640) {   // > 
+                    return 11;
+                  } else if (context.chart.width > 450) {   // > 
+                    return 11;
+                  } else if (context.chart.width > 375) {   // > 
+                    return 9.5;
+                  } else if (context.chart.width > 305) {
+                    return 8.5;
+                  } else if (context.chart.width > 100) {
+                    return 8;
                   }
+                  // }
                   return;
                 }
               }
@@ -105,18 +113,18 @@ class PhraseFrequencies extends React.Component {
       }
 
       return (
-
         <section className='section-phrase-frequency'>
           <h2 id="phrase-frequencies-h2">Phrase Frequencies</h2>
           <div className='slider-outer-div'>
             <span className="slider-title">Length of phrase</span>
             <div className="slider-div">
               <Slider
-                marks={[2, 3, 4, 5, 6, 7, 8]}
+                marks={this.props.sliderMarks}
                 min={0}
-                max={6}
+                max={this.props.sliderMax}
                 defaultValue={1}
                 onChange={this.props.onChange}
+                value={this.props.sliderCurrentValue - 2}
               />
             </div>
           </div>

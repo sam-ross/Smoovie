@@ -9,9 +9,18 @@ import PhraseFrequencies from './components/phraseFrequencies';
 import SwearWordFrequencies from './components/swearWordFrequencies';
 import SwearWordFrequenciesOverTime from './components/swearWordFrequenciesOverTime';
 import Toggle from 'react-toggle'
-import pulpFictionMovie from './demo/pulp-fiction.json';
+import demoMovieList from './demo/demo-movie-list.json';
 import pulpFictionWords from './demo/pulp-fiction-words.json';
 import pulpFictionData from './demo/pulp-fiction-data.json'
+import darkKnightWords from './demo/the-dark-knight-words.json';
+import darkKnightData from './demo/the-dark-knight-data.json';
+import wolfOfWallStreetWords from './demo/the-wolf-of-wall-street-words.json';
+import wolfOfWallStreetData from './demo/the-wolf-of-wall-street-data.json';
+import fightClubWords from './demo/fight-club-words.json';
+import fightClubData from './demo/fight-club-data.json';
+import shrek2Words from './demo/shrek2-words.json';
+import shrek2Data from './demo/shrek2-data.json';
+
 
 class MainWrapper extends React.Component {
   constructor() {
@@ -37,7 +46,17 @@ class MainWrapper extends React.Component {
 
       commonRemoved: true,
       sliderCurrentValue: 3,
-      demoMode: false
+      sliderMarks: [2, 3, 4, 5, 6, 7, 8],
+      sliderMax: 6,
+
+      demoMode: false,
+      demoFiles: {
+        "tt0110912": [pulpFictionWords, pulpFictionData],
+        "tt0468569": [darkKnightWords, darkKnightData],
+        "tt0993846": [wolfOfWallStreetWords, wolfOfWallStreetData],
+        "tt0137523": [fightClubWords, fightClubData],
+        "tt0298148": [shrek2Words, shrek2Data],
+      }
     };
   }
 
@@ -64,6 +83,8 @@ class MainWrapper extends React.Component {
     console.log(this.state.value);
 
     e.preventDefault();
+
+    document.getElementById("loading-row").scrollIntoView({ behavior: 'smooth' });
 
     this.setState({
       imdbId: e.target.alt,
@@ -118,6 +139,27 @@ class MainWrapper extends React.Component {
     this.setState({ sliderCurrentValue: newPosition });
   }
 
+  changeSliderValue() {
+    if (window.innerWidth < 705 && this.state.sliderMax !== 3) {
+      let sliderValue = this.state.sliderCurrentValue;
+      if (this.state.sliderCurrentValue > 5) {
+        sliderValue = 5;
+      }
+      this.setState({
+        sliderCurrentValue: sliderValue,
+        sliderMarks: [2, 3, 4, 5],
+        sliderMax: 3
+      })
+    } else if (window.innerWidth > 704 && this.state.sliderMax !== 6) {
+      console.log(this.state.sliderCurrentValue);
+      this.setState({
+        sliderMarks: [2, 3, 4, 5, 6, 7, 8],
+        sliderMax: 6
+      })
+    }
+
+  }
+
   getMovieList() {
     console.log("Getting movie list (parent): " + this.state.value);
     console.log("Demo mode: " + this.state.demoMode);
@@ -130,11 +172,11 @@ class MainWrapper extends React.Component {
 
     if (this.state.demoMode) {
       console.log("In demo mode");
-      console.log(pulpFictionMovie.movies);
+      console.log(demoMovieList.movies);
 
       this.setState({
         movieListIsLoaded: 'done',
-        movieListMovies: pulpFictionMovie.movies,
+        movieListMovies: demoMovieList.movies,
       });
     } else {
       fetch("http://localhost:8081/imdb/search/" + this.state.value)
@@ -169,7 +211,8 @@ class MainWrapper extends React.Component {
   }
 
   getWordList() {
-    console.log("Getting word list (parent): " + this.state.imdbId);
+    let imdbId = this.state.imdbId;
+    console.log("Getting word list (parent): " + imdbId);
     this.setState({
       wordListIsLoaded: 'loading',
       wordDataIsLoaded: 'waiting',
@@ -177,15 +220,16 @@ class MainWrapper extends React.Component {
 
     if (this.state.demoMode) {
       console.log("In demo mode");
-      console.log(pulpFictionWords.words);
+      let demoFiles = this.state.demoFiles;
+      console.log(demoFiles);
 
       this.setState({
         wordListIsLoaded: 'done',
-        wordListWords: pulpFictionWords.words,
+        wordListWords: demoFiles[imdbId][0].words,
         wordsRetrieved: !this.state.wordsRetrieved,
       });
     } else {
-      fetch("http://localhost:8081/words/" + this.state.imdbId)
+      fetch("http://localhost:8081/words/" + imdbId)
         .then((res) => {
           if (res.status >= 400 || res.status === 204) {
             throw new Error(res.status);
@@ -194,7 +238,6 @@ class MainWrapper extends React.Component {
         })
         .then(
           (result) => {
-            console.log(result);
             this.setState({
               wordListIsLoaded: 'done',
               wordListWords: result.words,
@@ -223,11 +266,13 @@ class MainWrapper extends React.Component {
 
     if (this.state.demoMode) {
       console.log("In demo mode");
-      console.log(pulpFictionData);
+      let imdbId = this.state.imdbId;
+      let demoFiles = this.state.demoFiles;
+      console.log(demoFiles);
 
       this.setState({
         wordDataIsLoaded: 'done',
-        wordData: pulpFictionData,
+        wordData: demoFiles[imdbId][1],
       });
     } else {
       fetch("http://localhost:8081/words/data", {
@@ -271,19 +316,18 @@ class MainWrapper extends React.Component {
         <div className='gradient-background-container'>
           <div className='header-and-first-section'>
             <div className="header">
-              <p className='smoovie-title'>Smoovie</p>
-              <ul className="header-nav">
-                <li className='demo-mode'>
-                  <a>Demo Mode</a>
-                  <div className="toggle-center">
-                    <Toggle
-                      defaultChecked={this.state.demoMode}
-                      icons={false}
-                      onChange={() => this.handleToggleChangeDemo()} />
-                  </div>
-                </li>
-              </ul>
+              <a className='smoovie-title' href=".">Smoovie</a>
+              <div className="header-nav" id={"header-nav-" + this.state.demoMode} onClick={() => this.handleToggleChangeDemo()}>
+                <p>Demo Mode</p>
+                <div className="toggle-center">
+                  <Toggle
+                    checked={this.state.demoMode}
+                    icons={false}
+                    onChange={() => this.handleToggleChangeDemo()}
+                  />
 
+                </div>
+              </div>
             </div>
 
             <div className="search">
@@ -333,6 +377,7 @@ class MainWrapper extends React.Component {
           imdbId={this.state.imdbId}
           moviesWithNoSubtitles={this.state.moviesWithNoSubtitles}
 
+          demoMode={this.state.demoMode}
         />
 
         <WordFrequencies
@@ -363,6 +408,10 @@ class MainWrapper extends React.Component {
           phraseFrequencyRanges={this.state.wordData.phraseFrequencyRanges}
           sliderCurrentValue={this.state.sliderCurrentValue}
           onChange={(e) => this.handleSliderChange(e)}
+
+          changeSliderValue={() => this.changeSliderValue()}
+          sliderMarks={this.state.sliderMarks}
+          sliderMax={this.state.sliderMax}
         />
 
         <div className='container-light-grey'>

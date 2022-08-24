@@ -5,7 +5,7 @@ import { Chart as ChartJS } from 'chart.js/auto'
 class SwearWordFrequenciesOverTime extends React.Component {
   componentDidUpdate(prevProps) {
     if ((prevProps.isLoaded === "loading" || prevProps.isLoaded === "waiting") && this.props.isLoaded === "done") {
-      console.log("xxxx done");
+      console.log("scrolling");
       document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
     }
   }
@@ -51,12 +51,18 @@ class SwearWordFrequenciesOverTime extends React.Component {
             title: {
               display: true,
               text: 'Movie Sections'
+            },
+            grid: {
+              display: false
             }
           },
           y: {
             title: {
               display: true,
               text: 'Frequency'
+            },
+            grid: {
+              display: true
             }
           },
         },

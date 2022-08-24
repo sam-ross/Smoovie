@@ -12,6 +12,7 @@ body {
   font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,
   Arial, sans-serif;
   overflow-x: hidden;
+  color: #555;
 }
 
 h2 {
@@ -54,36 +55,36 @@ h2 {
   font-size: 5rem;
   font-weight: 700;
   margin:0;
+  text-decoration: none;
 }
 
 .header-nav {
+  color: #fff;
   padding-left: 0;
-  width: 25rem;
   display: flex;
-  justify-content: flex-end;
 }
 
-.header-nav a {
-  color: #fff;
+.header-nav:hover, .header-nav:active {
+  color: rgb(200, 200, 200);
+  cursor: pointer;
+}
+
+#header-nav-false:hover:not(.react-toggle--disabled) .react-toggle-track,
+#header-nav-false:active:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #000000;
+}
+
+#header-nav-true:hover:not(.react-toggle--disabled) .react-toggle-track,
+#header-nav-true:active:not(.react-toggle--disabled) .react-toggle-track {
+  background-color: #128D15;
+}
+
+
+
+.header-nav p {
   font-size: 1.8rem;
   font-weight: 400;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.header-nav a:hover {
-  /* color: #8f0055;
-  text-decoration:underline; */
-}
-
-.demo-mode {
-  display: flex;
-}
-
-.demo-mode a {
-  margin-right:0.8rem;
+  margin: 0 0.8rem 0 0;
 }
 
 .toggle-center {
@@ -285,7 +286,7 @@ img {
   border-radius: 0.3rem;
 }
 
-.image-movies:hover{
+.image-movies:hover, .image-movies:active{
   /* filter: brightness(80%) */
   background-color: #fff;
   opacity: 0.5;
@@ -293,7 +294,8 @@ img {
 }
 
 .loading-row {
-  height: 8rem;
+  padding-bottom: 2em;
+  height: 6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -349,7 +351,6 @@ img {
 }
 
 .slider-title {
-  color: #999999;
   padding-bottom: 0.2rem;
 }
 
@@ -379,6 +380,7 @@ img {
   color: green;
   margin: 10rem 0;
   font-weight: bolder;
+  text-align: center;
 }
 
 /* Toggle section */
@@ -432,16 +434,8 @@ img {
   transition: all 0.2s ease;
 }
 
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #000000;
-}
-
 .react-toggle--checked .react-toggle-track {
   background-color: #19AB27;
-}
-
-.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #128D15;
 }
 
 .react-toggle-track-check {
