@@ -1,10 +1,10 @@
 import React from "react";
 import PulseLoader from "react-spinners/PulseLoader"
-import pulpFiction from "../demo/img/tt0110912.jpg"
-import darkKnight from "../demo/img/tt0468569.jpg"
-import wolfOfWallStreet from "../demo/img/tt0993846.jpg"
-import fightClub from "../demo/img/tt0137523.jpg"
-import shrek2 from "../demo/img/tt0298148.jpg"
+import pulpFiction from "../demo/img/tt0110912.webp"
+import darkKnight from "../demo/img/tt0468569.webp"
+import wolfOfWallStreet from "../demo/img/tt0993846.webp"
+import fightClub from "../demo/img/tt0137523.webp"
+import shrek2 from "../demo/img/tt0298148.webp"
 
 class MovieList extends React.Component {
 

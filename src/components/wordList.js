@@ -1,3 +1,4 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import React from "react";
 
 class WordList extends React.Component {
@@ -12,7 +13,13 @@ class WordList extends React.Component {
     }
     if ((prevProps.movieListIsLoaded === 'loading' || prevProps.movieListIsLoaded === 'waiting') && this.props.movieListIsLoaded === 'done') {
       console.log("Wow - movie list rendered");
-      document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });
+      if (this.props.demoMode) {
+        setTimeout(function () {
+          document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } else {
+        document.getElementById("movie-list-id").scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 

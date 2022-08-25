@@ -33,6 +33,11 @@ h2 {
   background-blend-mode: hard-light, overlay, color-burn, color-burn, normal;
 }
 
+.gradient-background-container-footer {
+  background: linear-gradient(120deg, #FF00C7 0%, #51003F 100%), linear-gradient(120deg, #0030AD 0%, #00071A 100%), linear-gradient(180deg, #000346 0%, #FF0000 100%), linear-gradient(60deg, #0029FF 0%, #AA0014 100%), radial-gradient(100% 165% at 100% 100%, #FF00A8 0%, #00FF47 100%), radial-gradient(100% 150% at 0% 0%, #FFF500 0%, #51D500 100%);
+  background-blend-mode: overlay, color-dodge, overlay, overlay, difference, normal;
+}
+
 .header-and-first-section {
   height: 100vh;
   font-family: Poppins, sans-serif;
@@ -372,6 +377,21 @@ img {
 
 .chart-frequencies {
   height: 1200px;
+}
+
+/* FOOTER */
+.section-footer{
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-image {
+  width: 4rem;
+  height: auto;
+  box-shadow: 0 0;
+  border-radius: 0;
 }
 
 /* OTHER */

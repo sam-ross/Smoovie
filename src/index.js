@@ -8,7 +8,8 @@ import WordLengths from './components/wordLengths';
 import PhraseFrequencies from './components/phraseFrequencies';
 import SwearWordFrequencies from './components/swearWordFrequencies';
 import SwearWordFrequenciesOverTime from './components/swearWordFrequenciesOverTime';
-import Toggle from 'react-toggle'
+import Footer from './components/footer';
+import Toggle from 'react-toggle';
 import demoMovieList from './demo/demo-movie-list.json';
 import pulpFictionWords from './demo/pulp-fiction-words.json';
 import pulpFictionData from './demo/pulp-fiction-data.json'
@@ -20,7 +21,6 @@ import fightClubWords from './demo/fight-club-words.json';
 import fightClubData from './demo/fight-club-data.json';
 import shrek2Words from './demo/shrek2-words.json';
 import shrek2Data from './demo/shrek2-data.json';
-
 
 class MainWrapper extends React.Component {
   constructor() {
@@ -425,6 +425,13 @@ class MainWrapper extends React.Component {
           <SwearWordFrequenciesOverTime
             isLoaded={this.state.wordDataIsLoaded}
             swearWordFrequenciesOverTime={this.state.wordData.swearWordFrequenciesOverTime}
+            demoMode={this.state.demoMode}
+          />
+        </div>
+
+        <div className='gradient-background-container-footer'>
+          <Footer
+            isLoaded={this.state.wordDataIsLoaded}
           />
         </div>
       </div >

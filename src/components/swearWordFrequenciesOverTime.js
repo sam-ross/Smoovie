@@ -6,7 +6,13 @@ class SwearWordFrequenciesOverTime extends React.Component {
   componentDidUpdate(prevProps) {
     if ((prevProps.isLoaded === "loading" || prevProps.isLoaded === "waiting") && this.props.isLoaded === "done") {
       console.log("scrolling");
-      document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
+      if (this.props.demoMode) {
+        setTimeout(function () {
+          document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } else {
+        document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 
@@ -74,10 +80,12 @@ class SwearWordFrequenciesOverTime extends React.Component {
       }
 
       return (
-        <section className='section-words-swear-time'>
-          <h2>Swear Words Over Time</h2>
-          <Line data={chartData} options={options} />
-        </section>
+        <div>
+          <section className='section-words-swear-time'>
+            <h2>Swear Words Over Time</h2>
+            <Line data={chartData} options={options} />
+          </section>
+        </div>
       )
 
     }
