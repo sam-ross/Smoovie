@@ -142,7 +142,7 @@ public class MovieService {
         System.out.println(responseBody);
 
         if (responseBody.length() == 0) {
-            throw new GeneralException("Empty SRT file downloaded using the following download link: " + downloadLink);
+            throw new EmptyResponseException("Empty SRT file downloaded using the following download link: " + downloadLink);
         }
 
         return responseBody;

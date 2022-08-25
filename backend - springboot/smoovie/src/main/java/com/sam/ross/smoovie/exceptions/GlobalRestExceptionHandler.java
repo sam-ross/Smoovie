@@ -18,7 +18,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity handleEmptyResponseException(EmptyResponseException e) {
         return ResponseEntity
                 .status(204)
-                .body(e.message);
+                .body(null);    // 204 responses don't contain a body
     }
 
     @ExceptionHandler(GeneralException.class)
