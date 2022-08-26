@@ -91,7 +91,6 @@ public class SubtitleDataExtraction {
             hm.put(word, value);
         }
         hm = sortByValue(hm);
-        System.out.println(hm.size());
 
         if (!removeCommonWords) {
             return hm;
@@ -103,8 +102,6 @@ public class SubtitleDataExtraction {
         List<String> stopWords = Utils.getStopWords();
 
         hmNoStopWords.entrySet().removeIf(k -> stopWords.contains(k.getKey()));
-
-        System.out.println(hmNoStopWords.size());
 
         return hmNoStopWords;
     }
@@ -122,7 +119,6 @@ public class SubtitleDataExtraction {
             hm.put(lengthString, value);
         }
         hm = sortByValue(hm);
-        System.out.println(hm.size());
 
         return hm;
     }
@@ -155,11 +151,7 @@ public class SubtitleDataExtraction {
             }
             phr.put(phrase, value);
         }
-
-        if (numberOfDuplicates == 0) System.out.println("There were no common phrases for this size of phrase");
-
         phr = sortByValue(phr);
-        System.out.println(phr.size());
 
         return phr;
     }
@@ -174,7 +166,6 @@ public class SubtitleDataExtraction {
             }
             hm.put(word, value);
         }
-        System.out.println(hm.size());
 
         // swear words
         List<String> swearWords = Utils.swearWords();
@@ -211,18 +202,14 @@ public class SubtitleDataExtraction {
             swr.remove("nigg");
             swr.put("n-word", curr);
         }
-
         swr = sortByValue(swr);
-        System.out.println("Words: " + wordCounter);
 
         return swr;
     }
 
     public static HashMap<String, Integer> getSwearWordFrequenciesOverTime(List<String> words, int numberOfSections) {
         // numberOfSections 5 by default for now
-        System.out.println(words.size());
         int wordsPerSection = words.size() / numberOfSections;
-        System.out.println(wordsPerSection);
 
         List<String> swearWords = Utils.swearWords();
         List<String> easilyMistakenSwearWords = Utils.explicityDefinedSwearWords();
@@ -257,8 +244,6 @@ public class SubtitleDataExtraction {
             }
             wordCounter++;
         }
-
-        System.out.println("wordCounter: " + wordCounter);
 
         // the graph should also finish on zero in the final section - for aesthetics
         swr.put(String.valueOf(numberOfSections + 1), 0);

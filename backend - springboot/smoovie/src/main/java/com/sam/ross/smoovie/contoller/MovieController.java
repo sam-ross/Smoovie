@@ -6,33 +6,33 @@ import com.sam.ross.smoovie.objects.IMDbMovieList;
 import com.sam.ross.smoovie.objects.words.WordData;
 import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.service.MovieService;
-import com.sam.ross.smoovie.utils.SubtitleDataExtraction;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"https://smoovie.app/", "https://smoovie-react.nw.r.appspot.com/"})
+@Slf4j
 public class MovieController {
     @Autowired
     private MovieService service;
 
-    private final String apiKeyImdb = "";
-    private final String apiKeyOpenSubtitles = "";
-    private final String username = "";
-    private final String password = "";
+    @Value("${imdb.api.key}")
+    private String apiKeyImdb;
+    @Value("${opensubtitles.api.key}")
+    private String apiKeyOpenSubtitles;
+    @Value("${opensubtitles.username}")
+    private String username;
+    @Value("${opensubtitles.password}")
+    private String password;
 
-    @CrossOrigin
-    @GetMapping("/ping")
-    public ResponseEntity<String> ping() {
-        return ResponseEntity.ok("{\"ping\": \"pong\"}");
-    }
-
-    @CrossOrigin
     @GetMapping("/imdb/search/{title}")
     public ResponseEntity<IMDbMovieList> searchIMDbMovies(@PathVariable String title) {
+        log.info("searchIMDbMovies endpoint has received a request (controller)");
         List<IMDbMovie> movies = service.searchIMDbMovies(title, apiKeyImdb);
         if (movies.size() > 5) {
             movies = movies.subList(0, 5);
@@ -41,20 +41,20 @@ public class MovieController {
         return ResponseEntity.ok(IMDbMovieList.builder().movies(movies).build());
     }
 
-    @CrossOrigin
     @GetMapping("/words/{imdbId}")
     public ResponseEntity<WordList> getWordList(@PathVariable String imdbId) {
+        log.info("getWordList endpoint has received a request (controller)");
         WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles, username, password);
 
         return ResponseEntity.ok(words);
     }
 
-    @CrossOrigin
     @PostMapping("/words/data")
     public ResponseEntity<WordData> getWordData(
             @RequestBody List<String> words,
             @RequestParam(defaultValue = "19") int numberOfSections
     ) {
+        log.info("getWordList endpoint has received a request (controller)");
         if (words.isEmpty()) {
             throw ServiceProxyException.builder()
                     .httpStatus(506)
@@ -67,53 +67,12 @@ public class MovieController {
         return ResponseEntity.ok(wordData);
     }
 
-    //
-    @PostMapping("/words/lengths")
-    public ResponseEntity<HashMap<String, Integer>> getWordLengths(@RequestBody List<String> words) {
-        HashMap<String, Integer> wordLengths = SubtitleDataExtraction.getWordLengths(words);
+    @CrossOrigin
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        log.info("ping endpoint has received a request (controller)");
 
-        System.out.println(wordLengths);
-
-        return ResponseEntity.ok(wordLengths);
-    }
-
-    //
-    @PostMapping("/words/phrases")
-    public ResponseEntity<HashMap<String, Integer>> getPhrases(
-            @RequestBody List<String> words,
-            @RequestParam(defaultValue = "3") int phraseLength
-    ) {
-        HashMap<String, Integer> phrases = SubtitleDataExtraction.getPhraseFrequencies(words, phraseLength);
-
-        System.out.println(phrases);
-
-        return ResponseEntity.ok(phrases);
-    }
-
-    //
-    @PostMapping("/words/swear")
-    public ResponseEntity<HashMap<String, Integer>> getSwearWords(@RequestBody List<String> words) {
-        HashMap<String, Integer> swearWords = SubtitleDataExtraction.getSwearWordFrequencies(words);
-
-        System.out.println(swearWords);
-
-        return ResponseEntity.ok(swearWords);
-    }
-
-    //
-    @PostMapping("/words/swear/time")
-    public ResponseEntity<HashMap<String, Integer>> getSwearWordsOverTime(
-            @RequestBody List<String> words,
-            @RequestParam(defaultValue = "5") int numberOfSections
-    ) {
-        HashMap<String, Integer> swearWords = SubtitleDataExtraction.getSwearWordFrequenciesOverTime(
-                words,
-                numberOfSections
-        );
-
-        System.out.println(swearWords);
-
-        return ResponseEntity.ok(swearWords);
+        return ResponseEntity.ok("pong");
     }
 
 }

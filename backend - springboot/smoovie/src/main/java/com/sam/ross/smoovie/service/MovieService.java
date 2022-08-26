@@ -13,12 +13,14 @@ import com.sam.ross.smoovie.objects.subtitles.SubtitlesSearchResponse;
 import com.sam.ross.smoovie.objects.words.WordData;
 import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.utils.SubtitleDataExtraction;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class MovieService {
     @Autowired
     private MovieDao dao;
@@ -45,18 +47,15 @@ public class MovieService {
         if (imdbId.length() > 1 && imdbId.charAt(0) == 't' && imdbId.charAt(1) == 't') {
             imdbId = imdbId.substring(2);
         }
-        System.out.println(imdbId);
 
         // get file id
         String fileId = getFileId(imdbId, apiKey);
-        System.out.println(fileId);
 
         // login
         String bearerToken = getLoginBearerToken(apiKey, username, password);
 
         // get download link
         String downloadLink = getDownloadLink(fileId, apiKey, bearerToken);
-        System.out.println(downloadLink);
 
         // use download link
         String subtitlesSRT = downloadSubtitles(downloadLink);
@@ -138,7 +137,6 @@ public class MovieService {
 
     private String downloadSubtitles(String downloadLink) {
         String responseBody = dao.useDownloadLink(downloadLink);
-        System.out.println(responseBody.length());
 
         if (responseBody.length() == 0) {
             throw new EmptyResponseException("Empty SRT file downloaded using the following download link: " + downloadLink);

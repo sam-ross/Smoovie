@@ -33,7 +33,7 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-        log.info("Response returned successfully");
+        log.info("Response returned successfully from IMDb API");
         log.trace("Received response from the IMDb 'searchMovie' endpoint: [{}]", response.body());
 
         return response.body();
@@ -59,7 +59,7 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-        log.info("Response returned successfully");
+        log.info("Response returned successfully from OpenSubtitles API");
         log.trace("Received response from the OpenSubtitles 'searchSubtitles' endpoint: [{}]", response.body());
 
         return response.body();
@@ -89,7 +89,7 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-        log.info("Response returned successfully");
+        log.info("Response returned successfully from OpenSubtitles API");
         log.trace("Received response from the OpenSubtitles 'logIn' endpoint");
 
         return response.body();
@@ -120,7 +120,7 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-        log.info("Response returned successfully");
+        log.info("Response returned successfully from OpenSubtitles API");
         log.trace("Received response from the OpenSubtitles 'downloadSubtitles' endpoint: [{}]", response.body());
 
         return response.body();
@@ -141,7 +141,7 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-        log.info("Response returned successfully");
+        log.info("Response returned successfully from OpenSubtitles API");
         log.trace("Received response from the OpenSubtitles download link: [{}]", response.body());
 
         return response.body();
@@ -169,7 +169,7 @@ public class MovieDao {
         }
 
         if (response.statusCode() != 200) {
-            System.out.println(format("Unexpected status code: %d", response.statusCode()));
+            log.debug(format("Unexpected status code: %d", response.statusCode()));
             throw ServiceProxyException.builder()
                     .httpStatus(response.statusCode())
                     .message(response.body())
