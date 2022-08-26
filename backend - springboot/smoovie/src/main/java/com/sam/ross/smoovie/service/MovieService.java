@@ -96,7 +96,6 @@ public class MovieService {
         } catch (Exception e) {
             throw new GeneralException("Subtitles JSON response returned in unexpected format: " + e.getMessage());
         }
-
     }
 
     private String getLoginBearerToken(String apiKey, String username, String password) {
@@ -139,7 +138,7 @@ public class MovieService {
 
     private String downloadSubtitles(String downloadLink) {
         String responseBody = dao.useDownloadLink(downloadLink);
-        System.out.println(responseBody);
+        System.out.println(responseBody.length());
 
         if (responseBody.length() == 0) {
             throw new EmptyResponseException("Empty SRT file downloaded using the following download link: " + downloadLink);

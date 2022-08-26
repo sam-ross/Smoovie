@@ -1,6 +1,5 @@
 package com.sam.ross.smoovie.contoller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sam.ross.smoovie.exceptions.ServiceProxyException;
 import com.sam.ross.smoovie.objects.IMDbMovie;
 import com.sam.ross.smoovie.objects.IMDbMovieList;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,46 +38,13 @@ public class MovieController {
             movies = movies.subList(0, 5);
         }
 
-//            List<IMDbMovie> movies = Utils.getVanillaMovies(title);
-//            if (title.equals("k")) {
-//                throw ServiceProxyException.builder()
-//                        .httpStatus(506)
-//                        .message("Unexpected error returned")
-//                        .build();
-//            }
-
         return ResponseEntity.ok(IMDbMovieList.builder().movies(movies).build());
-
     }
 
     @CrossOrigin
     @GetMapping("/words/{imdbId}")
     public ResponseEntity<WordList> getWordList(@PathVariable String imdbId) {
         WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles, username, password);
-
-//        WordList words = WordList.builder().words(Utils.getVanillaWords()).build();
-//        if (imdbId.equals("tt0110914")) {
-//            throw new EmptyResponseException();
-//        }
-//
-//        if (imdbId.equals("tt0110913")) {
-//            throw ServiceProxyException.builder()
-//                    .httpStatus(506)
-//                    .message("Unexpected error returned")
-//                    .build();
-//        }
-//
-//        if (imdbId.equals("tt0110912")) {
-//            return ResponseEntity.ok(WordList.builder().words(List.of()).build());
-//        }
-
-        // temporary code for creating the demo files
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(new File("fight-club-words.json"), words);
-        } catch (Exception e) {
-            throw new ServiceProxyException();
-        }
 
         return ResponseEntity.ok(words);
     }
@@ -99,26 +64,10 @@ public class MovieController {
 
         WordData wordData = service.getWordData(words, numberOfSections);
 
-        // temporary code for creating the demo files
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(new File("fight-club-data.json"), wordData);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        System.out.println(wordData.getWordFrequencies());
-        System.out.println(wordData.getWordFrequenciesWithCommonWords());
-        System.out.println(wordData.getWordLengths());
-        System.out.println(wordData.getPhraseFrequencyRanges());
-        System.out.println(wordData.getSwearWordFrequencies());
-        System.out.println(wordData.getSwearWordFrequenciesOverTime());
-
         return ResponseEntity.ok(wordData);
     }
 
     //
-    @CrossOrigin
     @PostMapping("/words/lengths")
     public ResponseEntity<HashMap<String, Integer>> getWordLengths(@RequestBody List<String> words) {
         HashMap<String, Integer> wordLengths = SubtitleDataExtraction.getWordLengths(words);
@@ -129,7 +78,6 @@ public class MovieController {
     }
 
     //
-    @CrossOrigin
     @PostMapping("/words/phrases")
     public ResponseEntity<HashMap<String, Integer>> getPhrases(
             @RequestBody List<String> words,
@@ -143,7 +91,6 @@ public class MovieController {
     }
 
     //
-    @CrossOrigin
     @PostMapping("/words/swear")
     public ResponseEntity<HashMap<String, Integer>> getSwearWords(@RequestBody List<String> words) {
         HashMap<String, Integer> swearWords = SubtitleDataExtraction.getSwearWordFrequencies(words);
@@ -154,7 +101,6 @@ public class MovieController {
     }
 
     //
-    @CrossOrigin
     @PostMapping("/words/swear/time")
     public ResponseEntity<HashMap<String, Integer>> getSwearWordsOverTime(
             @RequestBody List<String> words,
@@ -168,13 +114,6 @@ public class MovieController {
         System.out.println(swearWords);
 
         return ResponseEntity.ok(swearWords);
-    }
-
-    //
-    @CrossOrigin
-    @PostMapping("/helloPost")
-    public ResponseEntity<String> helloPost(@RequestBody WordList name) {
-        return ResponseEntity.ok("Hello postman " + name.getWords());
     }
 
 }

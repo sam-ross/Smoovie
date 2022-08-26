@@ -8,10 +8,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.String.format;
-
 public class SubtitleDataExtraction {
-    // word data section
     public static WordData formulateWordData(List<String> words, int numberOfSections) {
         try {
             HashMap<String, Integer> wordFrequencies = getWordFrequencies(words, true);
@@ -35,7 +32,6 @@ public class SubtitleDataExtraction {
         }
     }
 
-    //
     public static List<String> parseSubtitleFile(String subtitlesSRT) {
         Matcher matcher = Pattern.compile("(?<order>\\d+)\\n(?<start>[\\d:,]+)\\s+-{2}\\>\\s+(?<end>[\\d:,]+)\\n" +
                 "(?<text>[\\s\\S]*?(?=\\n{2}|$))").matcher(subtitlesSRT);
@@ -64,7 +60,6 @@ public class SubtitleDataExtraction {
         }
 
         String fullSubtitles = fullSubtitlesBuilder.toString();
-        System.out.println(fullSubtitles);
 
         fullSubtitles = fullSubtitles.replaceAll("\\<.*?\\>|\\[.*?\\]|\\{.*?\\}|\\(.*?\\)", "");
         fullSubtitles = fullSubtitles.replace("―", " ").replace("–", " ").replace("-", " ");
@@ -83,14 +78,8 @@ public class SubtitleDataExtraction {
         String[] wordsArr = fullSubtitles.split(" ");
         List<String> words = List.of(wordsArr);
 
-        for (String word : words) {
-            System.out.println(format("\"%s\"", word));
-        }
-
         return words;
     }
-
-
 
     private static HashMap<String, Integer> getWordFrequencies(List<String> words, Boolean removeCommonWords) {
         HashMap<String, Integer> hm = new HashMap<>();
@@ -101,14 +90,8 @@ public class SubtitleDataExtraction {
             }
             hm.put(word, value);
         }
-        System.out.println(hm.entrySet());
-
         hm = sortByValue(hm);
-
-        System.out.println(hm.entrySet());
         System.out.println(hm.size());
-
-        System.out.println();
 
         if (!removeCommonWords) {
             return hm;
@@ -121,10 +104,7 @@ public class SubtitleDataExtraction {
 
         hmNoStopWords.entrySet().removeIf(k -> stopWords.contains(k.getKey()));
 
-        System.out.println(hmNoStopWords.entrySet());
         System.out.println(hmNoStopWords.size());
-
-        System.out.println();
 
         return hmNoStopWords;
     }
@@ -132,7 +112,6 @@ public class SubtitleDataExtraction {
     public static HashMap<String, Integer> getWordLengths(List<String> words) {
         HashMap<String, Integer> hm = new HashMap<>();
         for (String word : words) {
-            System.out.println(word.length());
             int length = word.length();
             String lengthString = String.valueOf(length);
 
@@ -143,6 +122,8 @@ public class SubtitleDataExtraction {
             hm.put(lengthString, value);
         }
         hm = sortByValue(hm);
+        System.out.println(hm.size());
+
         return hm;
     }
 
@@ -178,9 +159,6 @@ public class SubtitleDataExtraction {
         if (numberOfDuplicates == 0) System.out.println("There were no common phrases for this size of phrase");
 
         phr = sortByValue(phr);
-
-        System.out.println(phr.values());
-        System.out.println(phr.entrySet());
         System.out.println(phr.size());
 
         return phr;
@@ -196,7 +174,6 @@ public class SubtitleDataExtraction {
             }
             hm.put(word, value);
         }
-        System.out.println(hm.entrySet());
         System.out.println(hm.size());
 
         // swear words
@@ -236,8 +213,6 @@ public class SubtitleDataExtraction {
         }
 
         swr = sortByValue(swr);
-
-        System.out.println(swr.entrySet());
         System.out.println("Words: " + wordCounter);
 
         return swr;
@@ -263,7 +238,6 @@ public class SubtitleDataExtraction {
         for (String word : words) {
             int currSection = (wordCounter / wordsPerSection) + 1;
             if (currSection > numberOfSections) {
-                System.out.println("section before decrement: " + currSection);
                 currSection--;
             }
             String section = String.valueOf(currSection);
@@ -273,7 +247,6 @@ public class SubtitleDataExtraction {
                 if (word.contains(swearWord)) {
                     int curr = swr.get(section);
                     swr.put(section, curr + 1);
-                    System.out.println(format("word: %s  swearword: %s", word, swearWord));
                     foundSwearWord = true;
                     break;
                 }
@@ -312,6 +285,7 @@ public class SubtitleDataExtraction {
             Map.Entry<String, Integer> aa = list.get(i);
             temp.put(aa.getKey(), aa.getValue());
         }
+
         return temp;
     }
 }

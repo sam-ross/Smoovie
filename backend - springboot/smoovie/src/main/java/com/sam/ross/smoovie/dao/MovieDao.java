@@ -1,6 +1,7 @@
 package com.sam.ross.smoovie.dao;
 
 import com.sam.ross.smoovie.exceptions.ServiceProxyException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.net.URI;
@@ -11,6 +12,7 @@ import java.net.http.HttpResponse;
 import static java.lang.String.format;
 
 @Repository
+@Slf4j
 public class MovieDao {
     private static final String OPEN_SUBTITLES_BASE_URL = "https://api.opensubtitles.com/api/v1";
 
@@ -22,6 +24,8 @@ public class MovieDao {
      * @return JSON response string to be used in the service to extract the IMDb ID
      */
     public String searchIMDbMovies(String title, String apiKey) {
+        log.info("Sending request to the IMDb 'searchMovie' endpoint: [{}]", title);
+
         String convertedMovieName = title.replace(" ", "%20");
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -29,6 +33,8 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
+        log.info("Response returned successfully");
+        log.trace("Received response from the IMDb 'searchMovie' endpoint: [{}]", response.body());
 
         return response.body();
     }
@@ -43,6 +49,8 @@ public class MovieDao {
      * that particular subtitle file
      */
     public String searchForSubtitles(String imdbId, String apiKey) {
+        log.info("Sending request to the OpenSubtitles 'searchSubtitles' endpoint: [{}]", imdbId);
+
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
                 .header("Api-Key", apiKey)
@@ -51,6 +59,8 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
+        log.info("Response returned successfully");
+        log.trace("Received response from the OpenSubtitles 'searchSubtitles' endpoint: [{}]", response.body());
 
         return response.body();
     }
@@ -66,6 +76,7 @@ public class MovieDao {
      * to call the "download subtitles" endpoint
      */
     public String logInAccount(String apiKey, String username, String password) {
+        log.info("Sending request to the OpenSubtitles 'logIn' endpoint");
         String requestBody = format("{\"password\": \"%s\", \"username\": \"%s\"}", password, username);
 
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
@@ -78,8 +89,8 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-
-        System.out.println(response.body());
+        log.info("Response returned successfully");
+        log.trace("Received response from the OpenSubtitles 'logIn' endpoint");
 
         return response.body();
     }
@@ -95,6 +106,8 @@ public class MovieDao {
      * used later to download the subtitles file
      */
     public String requestForDownload(String fileId, String apiKey, String bearerToken) {
+        log.info("Sending request to the OpenSubtitles 'download' endpoint: [{}]", fileId);
+
         String requestBody = format("{\"file_id\": %s}", fileId);
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -107,8 +120,8 @@ public class MovieDao {
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
-
-        System.out.println(response.body());
+        log.info("Response returned successfully");
+        log.trace("Received response from the OpenSubtitles 'downloadSubtitles' endpoint: [{}]", response.body());
 
         return response.body();
     }
@@ -120,12 +133,16 @@ public class MovieDao {
      * @return JSON response string containing the SRT file contents of the OpenSubtitles file
      */
     public String useDownloadLink(String downloadLink) {
+        log.info("Sending request to the OpenSubtitles download link: [{}]", downloadLink);
+
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(downloadLink))
                 .build();
 
         HttpResponse<String> response = getHttpResponse(client, request);
+        log.info("Response returned successfully");
+        log.trace("Received response from the OpenSubtitles download link: [{}]", response.body());
 
         return response.body();
     }
