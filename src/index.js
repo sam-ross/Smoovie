@@ -26,7 +26,7 @@ class MainWrapper extends React.Component {
   constructor() {
     super();
     this.state = {
-      baseUrl: "http://smoovie-360607.nw.r.appspot.com",
+      baseUrl: "https://smoovie-360607.nw.r.appspot.com",
 
       value: '',
       submitted: false,
