@@ -1,10 +1,3 @@
-/* 1 rem = 1 em = 16px */
-
-
-/*
-  Below 1375px - smaller desktops
-*/
-
 /*
   Below 1200px - tablets landscape
 */
@@ -25,18 +18,9 @@
 
 /* Below 944px - tablets */
 @media(max-width: 59em) {
-
   h1 {
     font-size: 3.8em;
   }
-
-  /* img {
-    width: 13em;
-  } */
-
-  /* .list-item-movies {
-    width: 13em; 
-  } */
   
   .list-movies {
     margin-top: 4em; 
@@ -49,7 +33,6 @@
   .chart-frequencies {
     height: 950px;
   }
-
 }
 
 /* Below 704px - smaller tablets */
@@ -61,16 +44,6 @@
   .chart-circle {
     width: 35em;
   }
-
-  #phrase-frequencies {
-    /* width: 80%; */
-  }
-
-  /* #phrase-frequencies-h2 {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  } */
-
 }
 
 /* Below 544px - phones */
@@ -104,10 +77,18 @@
     font-size: 1.5em;
   }
 
+  .section-footer {
+    height: 6em;
+  }
+
+  .footer-image {
+    width: 2.5em;
+    height: auto;
+  }
 }
 
-/* Below 368px - very narrow */
-@media(max-width: 23em) {
+/* Below 384px - very narrow */
+@media(max-width: 24em) {
   h2 {
     font-size: 1.9em;
   }
@@ -133,6 +114,29 @@
 
   .chart-frequencies {
     height: 850px;
+  }
+
+  section {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  .header-and-first-section {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  #phrase-frequencies-h2 {
+    padding-left: 0.4em;
+  }
+
+  .section-footer {
+    height: 5em;
+  }
+
+  .footer-image {
+    width: 2em;
+    height: auto;
   }
 }
 

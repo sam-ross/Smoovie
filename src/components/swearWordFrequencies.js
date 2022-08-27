@@ -15,16 +15,9 @@ class SwearWordFrequencies extends React.Component {
       'rgb(153, 102, 255)',
     ]
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (swearWordFrequencies)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (swearWordFrequencies)");
-    } else {
-      console.log(swearWordFrequencies);
-      // set up chart data
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       let labels = Object.keys(swearWordFrequencies);
       let values = Object.values(swearWordFrequencies);
-
       let chartData = {
         labels: labels,
         datasets: [{
@@ -40,18 +33,6 @@ class SwearWordFrequencies extends React.Component {
         plugins: {
           legend: {
             position: 'right',
-            // labels: {
-            //   font: function (context) {
-            //     if (context.chart.width > 590) {          // > 1344px 
-            //       defaults.font.size = 20;
-            //     } else if (context.chart.width > 530) {   // > 1232px
-            //       defaults.font.size = 12;
-            //     } else if (context.chart.width > 410) {   // > 
-            //       defaults.font.size = 5;
-            //     }
-            //     return;
-            //   }
-            // }
           },
         },
         layout: {
@@ -67,7 +48,6 @@ class SwearWordFrequencies extends React.Component {
         }
         return <h2 className="swear-word-no">No swear words in this movie!</h2 >
       }
-
 
       return (
         <section className='section-words-swear'>

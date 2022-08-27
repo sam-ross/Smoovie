@@ -15,14 +15,7 @@ class WordLengths extends React.Component {
       'rgb(153, 102, 255)',
     ]
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (wordLengths)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (wordLengths)");
-    } else {
-      console.log(wordLengths);
-
-      // set up chart data
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       let labels = Object.keys(wordLengths);
       let values = Object.values(wordLengths);
 
@@ -33,8 +26,6 @@ class WordLengths extends React.Component {
           data: values,
           backgroundColor: colours,
           hoverOffset: 15,
-          // clip: { left: 0, top: -200, right: 0, bottom: 0 }
-          // maintainAspectRatio: false
         }]
       }
 
@@ -52,7 +43,6 @@ class WordLengths extends React.Component {
         }
       }
 
-      // return chart
       return (
         <section className='section-words-lengths'>
           <h2 className="h2-word-lengths">Word Lengths</h2>

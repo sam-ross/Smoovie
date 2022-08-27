@@ -7,18 +7,8 @@ import fightClub from "../demo/img/tt0137523.webp"
 import shrek2 from "../demo/img/tt0298148.webp"
 
 class MovieList extends React.Component {
-
-  componentDidMount() {
-    console.log("Movie list mounted");
-  }
-
   componentDidUpdate(prevProps) {
-    if (prevProps.submitted !== this.props.submitted) {
-      console.log("Calling API from child (getMovieList)");
-      this.props.getMovieList();
-    }
-    if (prevProps.demoMode === false && this.props.demoMode === true) {
-      console.log("Calling API from child (getMovieList) [demo mode true]");
+    if ((prevProps.submitted !== this.props.submitted) || (!prevProps.demoMode && this.props.demoMode)) {
       this.props.getMovieList();
     }
   }
@@ -36,13 +26,9 @@ class MovieList extends React.Component {
       "tt0298148": shrek2,
     }
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (movieList)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (movieList)");
-    } else {
-      console.log("done (movieList)")
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       let regex = /(?:(?:18|19|20|21)[0-9]{2})/g;   // regex used to extract the movie year from the description
+      let displayNoContent = this.props.displayNoContent;
       return (
         <section className="section-movie-list" id="movie-list-id" >
           <h2>Step 2: Select your movie:</h2>
@@ -59,9 +45,9 @@ class MovieList extends React.Component {
                   className="image-movies"
                   width={200}
                   height={300}
-                ></img>
-                <p
-                  className="movie-title">{movie.title}
+                />
+                <p className="movie-title">
+                  {movie.title}
                   <br /> {movie.description.match(regex) ? "(" + movie.description.match(regex)[0] + ")" : null}
                 </p>
               </li>
@@ -74,6 +60,7 @@ class MovieList extends React.Component {
               color={"#bf004a"}
               loading={(wordListIsLoading || wordDataIsLoading)}
             />
+            <p className={"no-content-message-" + displayNoContent}>The OpenSubtitles API doesn't have subtitles for the movie you just selected</p>
           </div>
         </section >
       )

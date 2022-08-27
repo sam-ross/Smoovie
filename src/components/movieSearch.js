@@ -3,12 +3,10 @@ import PulseLoader from "react-spinners/PulseLoader"
 
 class MovieForm extends React.Component {
   render() {
-    const isLoading = (this.props.movieListIsLoaded === 'loading');
-    // console.log("currently loading...");
-
-
     let value = this.props.value;
+    const isLoading = (this.props.movieListIsLoaded === 'loading');
     const isDemoMode = this.props.demoMode;
+
     if (isDemoMode) {
       value = "Currently in demo mode";
     }
@@ -19,8 +17,6 @@ class MovieForm extends React.Component {
           <fieldset disabled={isDemoMode}>
             <label>
               <input type="text" value={value} onChange={this.props.handleChange} placeholder={"Enter movie title"} id={"label-disabled-" + isDemoMode} />
-
-              {/* <input type="submit" /> */}
               <button type="submit" className="button-hide">
                 <i className="fa fa-search fa-lg" id={"i-disabled-" + isDemoMode}></i>
               </button>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import MovieList from './components/movieList';
 import MovieForm from './components/movieSearch';
@@ -26,6 +26,8 @@ class MainWrapper extends React.Component {
   constructor() {
     super();
     this.state = {
+      baseUrl: "http://smoovie-360607.nw.r.appspot.com",
+
       value: '',
       submitted: false,
       wordCount: null,
@@ -33,6 +35,7 @@ class MainWrapper extends React.Component {
       movieListIsLoaded: 'waiting',
       movieListMovies: [],
       moviesWithNoSubtitles: [],
+      displayNoContent: false,
 
       wordListIsLoaded: 'waiting',
       wordListWords: [],
@@ -62,9 +65,6 @@ class MainWrapper extends React.Component {
 
   handleChange(e) {
     this.setState({ value: e.target.value });
-    // console.log(this.state.value);
-    // console.log(e.target.value);
-    console.log(this.state.submitted + "   " + this.state.value);
   }
 
   handleSubmit(e) {
@@ -72,23 +72,19 @@ class MainWrapper extends React.Component {
       alert("Movie title can't be empty!");
       e.preventDefault();
     } else {
-      console.log("value:" + this.state.value)
       e.preventDefault();
       this.setState({ submitted: !this.state.submitted });
     }
   }
 
   handleImageClick(e) {
-    console.log(e.target.alt);
-    console.log(this.state.value);
-
     e.preventDefault();
-
     document.getElementById("loading-row").scrollIntoView({ behavior: 'smooth' });
 
     this.setState({
       imdbId: e.target.alt,
-      movieClicked: !this.state.movieClicked
+      movieClicked: !this.state.movieClicked,
+      displayNoContent: false,
     });
   }
 
@@ -106,24 +102,21 @@ class MainWrapper extends React.Component {
     this.setState({
       movieListMovies: newMovieList,
       moviesWithNoSubtitles: temp,
+      displayNoContent: true,
     });
   }
 
   setWordCount(count) {
-    console.log(count);
     this.setState({
       wordCount: count
     })
   }
 
   handleToggleChange() {
-    console.log("Toggle changed from: " + this.state.commonRemoved + " to " + !this.state.commonRemoved);
     this.setState({ commonRemoved: !this.state.commonRemoved });
   }
 
   handleToggleChangeDemo() {
-    console.log("Demo mode changed from: " + this.state.demoMode + " to " + !this.state.demoMode);
-
     // hides all the sections again when flicking the toggle EITHER way (needed for scrollIntoView to work)
     this.setState({
       movieListIsLoaded: "waiting",
@@ -135,7 +128,6 @@ class MainWrapper extends React.Component {
 
   handleSliderChange(e) {
     let newPosition = e + 2;
-    console.log("Moving slider from :" + this.state.sliderCurrentValue + " to " + newPosition);
     this.setState({ sliderCurrentValue: newPosition });
   }
 
@@ -151,18 +143,14 @@ class MainWrapper extends React.Component {
         sliderMax: 3
       })
     } else if (window.innerWidth > 704 && this.state.sliderMax !== 6) {
-      console.log(this.state.sliderCurrentValue);
       this.setState({
         sliderMarks: [2, 3, 4, 5, 6, 7, 8],
         sliderMax: 6
       })
     }
-
   }
 
   getMovieList() {
-    console.log("Getting movie list (parent): " + this.state.value);
-    console.log("Demo mode: " + this.state.demoMode);
     this.setState({
       movieListIsLoaded: 'loading',
       wordListIsLoaded: 'waiting',
@@ -171,15 +159,12 @@ class MainWrapper extends React.Component {
     });
 
     if (this.state.demoMode) {
-      console.log("In demo mode");
-      console.log(demoMovieList.movies);
-
       this.setState({
         movieListIsLoaded: 'done',
         movieListMovies: demoMovieList.movies,
       });
     } else {
-      fetch("http://localhost:8081/imdb/search/" + this.state.value)
+      fetch(this.state.baseUrl + "/imdb/search/" + this.state.value)
         .then((res) => {
           if (res.status >= 400 || res.status === 204) {
             throw new Error(res.status);
@@ -194,9 +179,8 @@ class MainWrapper extends React.Component {
             });
           },
           (error) => {
-            console.log(error);
-            if (error.message === "204") {
-              window.alert('No results found for "' + this.state.value + '"');
+            if (error.message === "406" || error.message === "506" || error.message === "502") {
+              window.alert("The external IMDb API seems to be down at the moment: " + error.message + "\nPlease try again. \n\nIf the problem persists, try out the demo mode.");
             } else {
               window.alert("Unexpected error returned: " + error.message);
             }
@@ -207,21 +191,17 @@ class MainWrapper extends React.Component {
           }
         )
     }
-
   }
 
   getWordList() {
     let imdbId = this.state.imdbId;
-    console.log("Getting word list (parent): " + imdbId);
     this.setState({
       wordListIsLoaded: 'loading',
       wordDataIsLoaded: 'waiting',
     });
 
     if (this.state.demoMode) {
-      console.log("In demo mode");
       let demoFiles = this.state.demoFiles;
-      console.log(demoFiles);
 
       this.setState({
         wordListIsLoaded: 'done',
@@ -229,7 +209,7 @@ class MainWrapper extends React.Component {
         wordsRetrieved: !this.state.wordsRetrieved,
       });
     } else {
-      fetch("http://localhost:8081/words/" + imdbId)
+      fetch(this.state.baseUrl + "/words/" + imdbId)
         .then((res) => {
           if (res.status >= 400 || res.status === 204) {
             throw new Error(res.status);
@@ -245,9 +225,10 @@ class MainWrapper extends React.Component {
             });
           },
           (error) => {
-            console.log(error);
             if (error.message === "204") {
               this.handleNoSubtitles();
+            } else if (error.message === "406" || error.message === "506" || error.message === "502") {
+              window.alert("The external OpenSubtitles API seems to be down at the moment: " + error.message + "\nPlease try again. \n\nIf the problem persists, try out the demo mode.");
             } else {
               window.alert("Unexpected error returned: " + error.message);
             }
@@ -257,25 +238,21 @@ class MainWrapper extends React.Component {
           }
         )
     }
-
   }
 
   getWordData() {
-    console.log("Getting word data (parent)");
     this.setState({ wordDataIsLoaded: 'loading' });
 
     if (this.state.demoMode) {
-      console.log("In demo mode");
       let imdbId = this.state.imdbId;
       let demoFiles = this.state.demoFiles;
-      console.log(demoFiles);
 
       this.setState({
         wordDataIsLoaded: 'done',
         wordData: demoFiles[imdbId][1],
       });
     } else {
-      fetch("http://localhost:8081/words/data", {
+      fetch(this.state.baseUrl + "/words/data", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -291,14 +268,12 @@ class MainWrapper extends React.Component {
         })
         .then(
           (result) => {
-            console.log(result);
             this.setState({
               wordDataIsLoaded: 'done',
               wordData: result,
             });
           },
           (error) => {
-            console.log(error);
             window.alert("Unexpected error returned: " + error.message);
             this.setState({
               wordDataIsLoaded: 'waiting',
@@ -306,12 +281,10 @@ class MainWrapper extends React.Component {
           }
         )
     }
-
   }
 
   render() {
     return (
-
       <div>
         <div className='gradient-background-container'>
           <div className='header-and-first-section'>
@@ -332,7 +305,7 @@ class MainWrapper extends React.Component {
 
             <div className="search">
               <h1>Subtitle moovie analyser</h1>
-              <p className="under-heading">Step 1: Search for a moovie!</p>
+              <p className="under-heading">Step 1: Search for a moovie</p>
 
               <div className='input-container'>
                 <MovieForm
@@ -360,6 +333,7 @@ class MainWrapper extends React.Component {
             movies={this.state.movieListMovies}
 
             demoMode={this.state.demoMode}
+            displayNoContent={this.state.displayNoContent}
           />
         </div>
 
@@ -390,7 +364,6 @@ class MainWrapper extends React.Component {
           wordsAll={this.state.wordData.wordFrequenciesWithCommonWords}
           commonRemoved={this.state.commonRemoved}
 
-          // Toggle Props
           defaultChecked={this.state.commonRemoved}
           icons={false}
           onChange={() => this.handleToggleChange()}
@@ -435,8 +408,6 @@ class MainWrapper extends React.Component {
           />
         </div>
       </div >
-
-
     );
   }
 
@@ -447,5 +418,4 @@ root.render(
   <div>
     <MainWrapper />
   </div>
-
 );

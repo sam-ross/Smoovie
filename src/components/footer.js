@@ -5,20 +5,14 @@ class Footer extends React.Component {
 
   render() {
     const isLoaded = this.props.isLoaded;
-
-    if (isLoaded === 'waiting') {
-      console.log("waiting (footer)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (footer)");
-    } else {
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       return (
         <section className="section-footer">
-          <a href="https://github.com/sam-ross/smoovie-front-end" target="_blank" rel="noreferrer">
+          <a href="https://github.com/sam-ross/smoovie" target="_blank" rel="noreferrer">
             <img src={githubFooter} alt="github-white" className="footer-image"></img>
           </a>
         </section>
       )
-
     }
   }
 

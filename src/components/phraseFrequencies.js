@@ -11,22 +11,15 @@ class PhraseFrequencies extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.changeSliderValue(); // ensures that the initial values are correct based on the inital width
+    this.props.changeSliderValue();
   }
 
   render() {
     const isLoaded = this.props.isLoaded;
     const phraseFrequencyRanges = this.props.phraseFrequencyRanges;
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (phraseFrequencies)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (phraseFrequencies)");
-    } else {
-      console.log(phraseFrequencyRanges);
-
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       const sliderCurrentValue = this.props.sliderCurrentValue;
-
       let entries = Object.entries(phraseFrequencyRanges[sliderCurrentValue - 2].phraseFrequencyRange).slice(0, 50);
       let labels = entries.map((entry) => entry[0]);
       let values = entries.map((entry) => entry[1]);
@@ -77,26 +70,24 @@ class PhraseFrequencies extends React.Component {
             ticks: {
               font: {
                 size: function (context) {
-                  // Responsive text resizing for all the charts
-                  // if (sliderCurrentValue > 3) {
-                  if (context.chart.width > 1290) {          // > 1344px 
+                  // Responsive text resizing for this chart
+                  if (context.chart.width > 1290) {
                     return 12;
-                  } else if (context.chart.width > 1160) {   // > 1232px
+                  } else if (context.chart.width > 1160) {
                     return 11;
-                  } else if (context.chart.width > 860) {   // > 975
+                  } else if (context.chart.width > 860) {
                     return 11;
-                  } else if (context.chart.width > 640) {   // > 
+                  } else if (context.chart.width > 640) {
                     return 11;
-                  } else if (context.chart.width > 450) {   // > 
+                  } else if (context.chart.width > 450) {
                     return 11;
-                  } else if (context.chart.width > 375) {   // > 
+                  } else if (context.chart.width > 375) {
                     return 9.5;
                   } else if (context.chart.width > 305) {
                     return 8.5;
                   } else if (context.chart.width > 100) {
                     return 8;
                   }
-                  // }
                   return;
                 }
               }

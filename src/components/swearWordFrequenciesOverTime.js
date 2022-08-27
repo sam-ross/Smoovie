@@ -5,7 +5,6 @@ import { Chart as ChartJS } from 'chart.js/auto'
 class SwearWordFrequenciesOverTime extends React.Component {
   componentDidUpdate(prevProps) {
     if ((prevProps.isLoaded === "loading" || prevProps.isLoaded === "waiting") && this.props.isLoaded === "done") {
-      console.log("scrolling");
       if (this.props.demoMode) {
         setTimeout(function () {
           document.getElementById("word-frequency").scrollIntoView({ behavior: 'smooth' });
@@ -20,13 +19,7 @@ class SwearWordFrequenciesOverTime extends React.Component {
     const isLoaded = this.props.isLoaded;
     const swearWordFrequenciesOverTime = this.props.swearWordFrequenciesOverTime;
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (swearWordFrequenciesOverTime)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (swearWordFrequenciesOverTime)");
-    } else {
-      console.log(swearWordFrequenciesOverTime);
-
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       let labels = Object.keys(swearWordFrequenciesOverTime);
       let values = Object.values(swearWordFrequenciesOverTime);
 
@@ -39,8 +32,6 @@ class SwearWordFrequenciesOverTime extends React.Component {
           backgroundColor: 'rgb(75, 192, 192, 0.2)',
           pointBackgroundColor: 'rgb(75, 192, 192)',
           pointBorderColor: 'rgb(255,255,255)',
-          // hoverBackgroundColor: 'rgb(255,255,255)',
-          // pointHoverBackgroundColor: 'rgb(255,255,255)',
           hoverRadius: 6,
           hoverBorderWidth: 1,
           pointBorderWidth: 0,

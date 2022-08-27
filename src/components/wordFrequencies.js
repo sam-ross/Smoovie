@@ -8,7 +8,6 @@ class WordFrequencies extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.wordsRetrieved !== this.props.wordsRetrieved) {
-      console.log("Calling API from child (getWordData) (for frequency)");
       this.props.getWordData();
     }
   }
@@ -18,19 +17,12 @@ class WordFrequencies extends React.Component {
     const commonRemoved = this.props.commonRemoved;
     let wordsChosen;
 
-    if (isLoaded === 'waiting') {
-      console.log("waiting (wordFrequencies)");
-    } else if (isLoaded === 'loading') {
-      console.log("loading!!!!! (wordFrequencies)");
-    } else {
-      console.log(" XXXXXXX done...")
+    if (isLoaded !== 'waiting' && isLoaded !== 'loading') {
       if (commonRemoved) {
         wordsChosen = this.props.words;
       } else {
         wordsChosen = this.props.wordsAll;
       }
-
-      console.log(wordsChosen);
 
       let entries = Object.entries(wordsChosen).sort((a, b) => b[1] - a[1]).slice(0, 50);
       let labels = entries.map((entry) => entry[0]);
@@ -64,8 +56,6 @@ class WordFrequencies extends React.Component {
         }]
       }
 
-
-
       let options = {
         scales: {
           x: {
@@ -74,19 +64,20 @@ class WordFrequencies extends React.Component {
               text: 'Frequency',
               font: function (context) {
                 // Responsive text resizing for all the charts
-                if (context.chart.width > 1290) {          // > 1344px 
+                // Responsive legend label padding resizing for donut and pie charts
+                if (context.chart.width > 1290) {
                   defaults.font.size = 12;
                   defaults.plugins.legend.labels.padding = 12;
-                } else if (context.chart.width > 1160) {   // > 1232px
+                } else if (context.chart.width > 1160) {
                   defaults.font.size = 11;
                   defaults.plugins.legend.labels.padding = 12;
-                } else if (context.chart.width > 860) {   // > 975
+                } else if (context.chart.width > 860) {
                   defaults.font.size = 11;
                   defaults.plugins.legend.labels.padding = 10;
-                } else if (context.chart.width > 640) {   // > 
+                } else if (context.chart.width > 640) {
                   defaults.font.size = 11;
                   defaults.plugins.legend.labels.padding = 8;
-                } else if (context.chart.width > 460) {   // > 
+                } else if (context.chart.width > 460) {
                   defaults.font.size = 11;
                   defaults.plugins.legend.labels.padding = 4;
                 } else if (context.chart.width > 100) {

@@ -1,14 +1,11 @@
 html, 
 body {
   margin: 0;
-  /* min-height: 100%; */
   height: 100%;
   font-size: 62.5%;
 }
 
 body {
-  /* font: 30px "Century Gothic", Futura, sans-serif; */
-
   font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,
   Arial, sans-serif;
   overflow-x: hidden;
@@ -27,6 +24,8 @@ h2 {
   flex-grow: 1;
   font-size: 1.6rem;
 }
+
+/* LANDING PAGE */
 
 .gradient-background-container {
   background: linear-gradient(238.72deg, #0044A9 0%, #F700A3 100%), radial-gradient(100% 188.01% at 76.14% 0%, #43DDFF 0%, #FF0000 100%), linear-gradient(0deg, #DB00FF 0%, #14FF00 100%), radial-gradient(59.2% 100% at 50% 100%, #6A00D5 0%, #00E0FF 100%), radial-gradient(100% 148.07% at 0% 0%, #FF9900 0%, #001AFF 100%);
@@ -63,6 +62,56 @@ h2 {
   text-decoration: none;
 }
 
+.toggle-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 76vh;
+  padding-bottom: 12vh;
+}
+
+.loading-row-search {
+  height: 12vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-content-message-true {
+  margin: 0;
+  font-weight: bold;
+  color: #bf004a;
+  text-align: center;
+}
+
+.no-content-message-false {
+  font-size: 0;
+}
+
+h1 {
+  color: #fff;
+  font-size: 7rem;
+  font-weight: 700;
+  text-shadow: 0 0.2rem 0.4rem rgb(13 0 77 / 8%), 0 0.3rem 0.6rem rgb(13 0 77 / 8%), 0 0.8rem 1.6rem rgb(13 0 77 / 8%);
+  margin: 12vh 0 0 0;
+}
+
+.under-heading {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 300;
+  margin:0;
+}
+
+/* HEADER NAV */
+
 .header-nav {
   color: #fff;
   padding-left: 0;
@@ -84,51 +133,13 @@ h2 {
   background-color: #128D15;
 }
 
-
-
 .header-nav p {
   font-size: 1.8rem;
   font-weight: 400;
   margin: 0 0.8rem 0 0;
 }
 
-.toggle-center {
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  justify-content: center;
-}
-
-.search {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 76vh;
-  padding-bottom: 12vh;
-}
-
-.loading-row-search {
-  height: 12vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-h1 {
-  color: #fff;
-  font-size: 7rem;
-  font-weight: 700;
-  text-shadow: 0 0.2rem 0.4rem rgb(13 0 77 / 8%), 0 0.3rem 0.6rem rgb(13 0 77 / 8%), 0 0.8rem 1.6rem rgb(13 0 77 / 8%);
-  margin: 12vh 0 0 0;
-}
-
-.under-heading {
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 300;
-  margin:0;
-}
+/* SERACH FORM */
 
 fieldset {
   border: none;
@@ -138,7 +149,7 @@ fieldset {
 
 form {
   /* To keep the search bar centered as there is the 16px hidden button to the right of the search bar */
-  padding-left:16px;  
+  padding-left: 16px;  
 }
 
 #form-disabled-true {
@@ -161,7 +172,7 @@ form {
   font-size: 1.8rem;
 }
 
-input{
+input {
   position: relative;
   padding: 1.5rem 4rem 1.5rem 2rem;
   color: #525252;
@@ -177,14 +188,14 @@ input{
   width: 40rem;
 }
 
-i{
+i {
   position: relative;
   top: -0.1rem;
   left: -3.5rem;
   color: #8f0055;
 }
 
-i:hover{
+i:hover {
   cursor: pointer;
 }
 
@@ -200,8 +211,6 @@ i:hover{
   align-items: center;
   margin-top: 20px;
 }
-
-
 
 /* SECTIONS */
 
@@ -286,16 +295,12 @@ img {
   height: auto;
   cursor: pointer;
   box-shadow: 0 0.1rem 0.2rem 0 rgba(0, 0, 0, 0.2), 0 0.15rem 0.3rem 0 rgba(0, 0, 0, 0.19);
-  /* box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 3px 0 rgba(0, 0, 0, 0.19); */
-  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19); */
   border-radius: 0.3rem;
 }
 
-.image-movies:hover, .image-movies:active{
-  /* filter: brightness(80%) */
+.image-movies:hover, .image-movies:active {
   background-color: #fff;
   opacity: 0.5;
-  /* border-radius: 5px; */
 }
 
 .loading-row {
@@ -306,7 +311,6 @@ img {
   align-items: center;
   justify-content: center;
 }
-
 
 /* WORD FREQUENCIES */
 
@@ -380,7 +384,7 @@ img {
 }
 
 /* FOOTER */
-.section-footer{
+.section-footer {
   height: 12rem;
   display: flex;
   align-items: center;
@@ -403,7 +407,8 @@ img {
   text-align: center;
 }
 
-/* Toggle section */
+/* TOGGLE LIBRARY */
+
 .react-toggle {
   touch-action: pan-x;
 
@@ -525,12 +530,6 @@ img {
   left: 2.7rem;
   border-color: #19AB27;
 }
-
-/* .react-toggle--focus .react-toggle-thumb {
-  -webkit-box-shadow: 0px 0px 3px 2px #0099E0;
-  -moz-box-shadow: 0px 0px 3px 2px #0099E0;
-  box-shadow: 0px 0px 2px 3px #0099E0;
-} */
 
 .react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
   -webkit-box-shadow: 0px 0px 0.5rem 0.5rem #0099E0;
