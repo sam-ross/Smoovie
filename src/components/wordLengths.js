@@ -1,6 +1,6 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS } from 'chart.js/auto'
+import Chart from 'chart.js/auto'
 
 class WordLengths extends React.Component {
   render() {

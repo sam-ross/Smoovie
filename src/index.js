@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MovieList from './components/movieList';
+import MovieList from './components/movieList'
 import MovieForm from './components/movieSearch';
 import WordList from './components/wordList';
 import WordFrequencies from './components/wordFrequencies';
@@ -12,21 +12,18 @@ import Footer from './components/footer';
 import Toggle from 'react-toggle';
 import demoMovieList from './demo/demo-movie-list.json';
 import pulpFictionWords from './demo/pulp-fiction-words.json';
-import pulpFictionData from './demo/pulp-fiction-data.json'
 import darkKnightWords from './demo/the-dark-knight-words.json';
-import darkKnightData from './demo/the-dark-knight-data.json';
 import wolfOfWallStreetWords from './demo/the-wolf-of-wall-street-words.json';
-import wolfOfWallStreetData from './demo/the-wolf-of-wall-street-data.json';
 import fightClubWords from './demo/fight-club-words.json';
-import fightClubData from './demo/fight-club-data.json';
 import shrek2Words from './demo/shrek2-words.json';
-import shrek2Data from './demo/shrek2-data.json';
+
 
 class MainWrapper extends React.Component {
   constructor() {
     super();
     this.state = {
-      baseUrl: "https://smoovie-360607.nw.r.appspot.com",
+      baseUrl: "https://smoovie-360607.nw.r.appspot.com/",
+      // baseUrl: "https://localhost:8081",
 
       value: '',
       submitted: false,
@@ -54,11 +51,11 @@ class MainWrapper extends React.Component {
 
       demoMode: false,
       demoFiles: {
-        "tt0110912": [pulpFictionWords, pulpFictionData],
-        "tt0468569": [darkKnightWords, darkKnightData],
-        "tt0993846": [wolfOfWallStreetWords, wolfOfWallStreetData],
-        "tt0137523": [fightClubWords, fightClubData],
-        "tt0298148": [shrek2Words, shrek2Data],
+        "tt0110912": pulpFictionWords,
+        "tt0468569": darkKnightWords,
+        "tt0993846": wolfOfWallStreetWords,
+        "tt0137523": fightClubWords,
+        "tt0298148": shrek2Words,
       }
     };
   }
@@ -205,7 +202,7 @@ class MainWrapper extends React.Component {
 
       this.setState({
         wordListIsLoaded: 'done',
-        wordListWords: demoFiles[imdbId][0].words,
+        wordListWords: demoFiles[imdbId].words,
         wordsRetrieved: !this.state.wordsRetrieved,
       });
     } else {
@@ -243,44 +240,35 @@ class MainWrapper extends React.Component {
   getWordData() {
     this.setState({ wordDataIsLoaded: 'loading' });
 
-    if (this.state.demoMode) {
-      let imdbId = this.state.imdbId;
-      let demoFiles = this.state.demoFiles;
-
-      this.setState({
-        wordDataIsLoaded: 'done',
-        wordData: demoFiles[imdbId][1],
-      });
-    } else {
-      fetch(this.state.baseUrl + "/words/data", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(this.state.wordListWords),
+    fetch(this.state.baseUrl + "/words/data", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(this.state.wordListWords),
+    })
+      .then((res) => {
+        if (res.status >= 400 || res.status === 204) {
+          throw new Error(res.status);
+        }
+        return res.json();
       })
-        .then((res) => {
-          if (res.status >= 400 || res.status === 204) {
-            throw new Error(res.status);
-          }
-          return res.json();
-        })
-        .then(
-          (result) => {
-            this.setState({
-              wordDataIsLoaded: 'done',
-              wordData: result,
-            });
-          },
-          (error) => {
-            window.alert("Unexpected error returned: " + error.message);
-            this.setState({
-              wordDataIsLoaded: 'waiting',
-            });
-          }
-        )
-    }
+      .then(
+        (result) => {
+          this.setState({
+            wordDataIsLoaded: 'done',
+            wordData: result,
+          });
+        },
+        (error) => {
+          window.alert("Unexpected error returned: " + error.message);
+          this.setState({
+            wordDataIsLoaded: 'waiting',
+          });
+        }
+      )
+
   }
 
   render() {
