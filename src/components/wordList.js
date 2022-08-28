@@ -4,10 +4,10 @@ class WordList extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.clicked !== this.props.clicked) {
-      this.props.getWordList();
+      this.props.getWordData();
     }
-    if (prevProps.words.length !== this.props.words.length) {
-      this.props.setWordCount(this.props.words.length);
+    if (prevProps.wordCount !== this.props.wordCount) {
+      this.props.setWordCount(this.props.wordCount);
     }
 
     // if the movie list has successfully finished loading, then scroll down to the list

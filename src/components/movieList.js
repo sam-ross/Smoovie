@@ -1,12 +1,13 @@
 import React from "react";
 import PulseLoader from "react-spinners/PulseLoader"
-import pulpFiction from "../demo/img/tt0110912.webp"
-import darkKnight from "../demo/img/tt0468569.webp"
-import wolfOfWallStreet from "../demo/img/tt0993846.webp"
-import fightClub from "../demo/img/tt0137523.webp"
-import shrek2 from "../demo/img/tt0298148.webp"
+import pulpFiction from "../resources/demo/img/tt0110912.webp"
+import darkKnight from "../resources/demo/img/tt0468569.webp"
+import wolfOfWallStreet from "../resources/demo/img/tt0993846.webp"
+import fightClub from "../resources/demo/img/tt0137523.webp"
+import shrek2 from "../resources/demo/img/tt0298148.webp"
 
 class MovieList extends React.Component {
+
   componentDidUpdate(prevProps) {
     if ((prevProps.submitted !== this.props.submitted) || (!prevProps.demoMode && this.props.demoMode)) {
       this.props.getMovieList();
@@ -16,7 +17,6 @@ class MovieList extends React.Component {
   render() {
     const isLoaded = this.props.isLoaded;
     const movies = this.props.movies;
-    const wordListIsLoading = (this.props.wordListIsLoaded === 'loading');
     const wordDataIsLoading = (this.props.wordDataIsLoaded === 'loading');
     const demoImages = {
       "tt0110912": pulpFiction,
@@ -35,8 +35,8 @@ class MovieList extends React.Component {
           <ul className="list-movies">
             {movies.map(movie => (
               <li key={movie.id} className="list-item-movies">
-                {/* By initially setting the image width and height in the html, this means on first calculation,
-                the images will be 200x300 then the css property for height auto will adjust the height of the 
+                {/* By initially setting the image width and height in html, this means on first calculation,
+                the images will be 200x300 then the css property for height: auto will adjust the height of the 
                 image to keep it's aspect ratio. This is instead of the height being 0 on first calculation,
                 so this allows the scrollToView fuction to work more effectively. */}
                 <img
@@ -58,7 +58,7 @@ class MovieList extends React.Component {
             <PulseLoader
               size={15}
               color={"#bf004a"}
-              loading={(wordListIsLoading || wordDataIsLoading)}
+              loading={(wordDataIsLoading)}
             />
             <p className={"no-content-message-" + displayNoContent}>The OpenSubtitles API doesn't have subtitles for the movie you just selected</p>
           </div>

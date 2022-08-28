@@ -3,6 +3,7 @@ import { Pie } from "react-chartjs-2";
 import Chart from 'chart.js/auto'
 
 class SwearWordFrequencies extends React.Component {
+
   render() {
     const isLoaded = this.props.isLoaded;
     const swearWordFrequencies = this.props.swearWordFrequencies;

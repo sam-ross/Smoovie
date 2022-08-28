@@ -5,6 +5,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 class PhraseFrequencies extends React.Component {
+
   componentDidMount() {
     window.addEventListener('resize', this.props.changeSliderValue);
     this.props.changeSliderValue(); // ensures that the initial values are correct based on the inital width

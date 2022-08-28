@@ -10,20 +10,19 @@ import SwearWordFrequencies from './components/swearWordFrequencies';
 import SwearWordFrequenciesOverTime from './components/swearWordFrequenciesOverTime';
 import Footer from './components/footer';
 import Toggle from 'react-toggle';
-import demoMovieList from './demo/demo-movie-list.json';
-import pulpFictionWords from './demo/pulp-fiction-words.json';
-import darkKnightWords from './demo/the-dark-knight-words.json';
-import wolfOfWallStreetWords from './demo/the-wolf-of-wall-street-words.json';
-import fightClubWords from './demo/fight-club-words.json';
-import shrek2Words from './demo/shrek2-words.json';
-
+import demoMovieList from './resources/demo/demo-movie-list.json';
+import pulpFictionData from './resources/demo/pulpFiction-data.json';
+import theDarkKnightData from './resources/demo/theDarkKnight-data.json';
+import theWolfOfWallStreetData from './resources/demo/theWolfOfWallStreet-data.json';
+import fightClubData from './resources/demo/fightClub-data.json';
+import shrek2Data from './resources/demo/shrek2-data.json';
 
 class MainWrapper extends React.Component {
   constructor() {
     super();
     this.state = {
-      baseUrl: "https://smoovie-360607.nw.r.appspot.com/",
-      // baseUrl: "https://localhost:8081",
+      baseUrl: "https://smoovie-360607.nw.r.appspot.com",
+      // baseUrl: "http://localhost:8081",
 
       value: '',
       submitted: false,
@@ -34,12 +33,8 @@ class MainWrapper extends React.Component {
       moviesWithNoSubtitles: [],
       displayNoContent: false,
 
-      wordListIsLoaded: 'waiting',
-      wordListWords: [],
-
       imdbId: null,
       movieClicked: false,
-      wordsRetrieved: false,
 
       wordDataIsLoaded: 'waiting',
       wordData: {},
@@ -51,11 +46,11 @@ class MainWrapper extends React.Component {
 
       demoMode: false,
       demoFiles: {
-        "tt0110912": pulpFictionWords,
-        "tt0468569": darkKnightWords,
-        "tt0993846": wolfOfWallStreetWords,
-        "tt0137523": fightClubWords,
-        "tt0298148": shrek2Words,
+        "tt0110912": pulpFictionData,
+        "tt0468569": theDarkKnightData,
+        "tt0993846": theWolfOfWallStreetData,
+        "tt0137523": fightClubData,
+        "tt0298148": shrek2Data,
       }
     };
   }
@@ -117,7 +112,6 @@ class MainWrapper extends React.Component {
     // hides all the sections again when flicking the toggle EITHER way (needed for scrollIntoView to work)
     this.setState({
       movieListIsLoaded: "waiting",
-      wordListIsLoaded: "waiting",
       wordDataIsLoaded: "waiting",
       demoMode: !this.state.demoMode,
     })
@@ -150,7 +144,6 @@ class MainWrapper extends React.Component {
   getMovieList() {
     this.setState({
       movieListIsLoaded: 'loading',
-      wordListIsLoaded: 'waiting',
       wordDataIsLoaded: 'waiting',
       moviesWithNoSubtitles: [],
     });
@@ -190,23 +183,19 @@ class MainWrapper extends React.Component {
     }
   }
 
-  getWordList() {
+  getWordData() {
     let imdbId = this.state.imdbId;
     this.setState({
-      wordListIsLoaded: 'loading',
-      wordDataIsLoaded: 'waiting',
+      wordDataIsLoaded: 'loading',
     });
 
     if (this.state.demoMode) {
-      let demoFiles = this.state.demoFiles;
-
       this.setState({
-        wordListIsLoaded: 'done',
-        wordListWords: demoFiles[imdbId].words,
-        wordsRetrieved: !this.state.wordsRetrieved,
+        wordDataIsLoaded: 'done',
+        wordData: this.state.demoFiles[imdbId],
       });
     } else {
-      fetch(this.state.baseUrl + "/words/" + imdbId)
+      fetch(this.state.baseUrl + "/words/data/" + imdbId)
         .then((res) => {
           if (res.status >= 400 || res.status === 204) {
             throw new Error(res.status);
@@ -216,9 +205,8 @@ class MainWrapper extends React.Component {
         .then(
           (result) => {
             this.setState({
-              wordListIsLoaded: 'done',
-              wordListWords: result.words,
-              wordsRetrieved: !this.state.wordsRetrieved,
+              wordDataIsLoaded: 'done',
+              wordData: result,
             });
           },
           (error) => {
@@ -230,45 +218,11 @@ class MainWrapper extends React.Component {
               window.alert("Unexpected error returned: " + error.message);
             }
             this.setState({
-              wordListIsLoaded: 'waiting',
+              wordDataIsLoaded: 'waiting',
             });
           }
         )
     }
-  }
-
-  getWordData() {
-    this.setState({ wordDataIsLoaded: 'loading' });
-
-    fetch(this.state.baseUrl + "/words/data", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(this.state.wordListWords),
-    })
-      .then((res) => {
-        if (res.status >= 400 || res.status === 204) {
-          throw new Error(res.status);
-        }
-        return res.json();
-      })
-      .then(
-        (result) => {
-          this.setState({
-            wordDataIsLoaded: 'done',
-            wordData: result,
-          });
-        },
-        (error) => {
-          window.alert("Unexpected error returned: " + error.message);
-          this.setState({
-            wordDataIsLoaded: 'waiting',
-          });
-        }
-      )
-
   }
 
   render() {
@@ -285,8 +239,8 @@ class MainWrapper extends React.Component {
                     checked={this.state.demoMode}
                     icons={false}
                     onChange={() => this.handleToggleChangeDemo()}
+                    aria-label={"toggle-demo"}
                   />
-
                 </div>
               </div>
             </div>
@@ -314,7 +268,6 @@ class MainWrapper extends React.Component {
             submitted={this.state.submitted}
             getMovieList={() => this.getMovieList()}
             handleImageClick={(e) => this.handleImageClick(e)}
-            wordListIsLoaded={this.state.wordListIsLoaded}
             wordDataIsLoaded={this.state.wordDataIsLoaded}
 
             isLoaded={this.state.movieListIsLoaded}
@@ -326,25 +279,19 @@ class MainWrapper extends React.Component {
         </div>
 
         <WordList
-          getWordList={() => this.getWordList()}
-          setWordCount={(count) => this.setWordCount(count)}
           clicked={this.state.movieClicked}
+          getWordData={() => this.getWordData()}
 
-          isLoaded={this.state.wordListIsLoaded}
-          words={this.state.wordListWords}
+          wordCount={this.state.wordData.wordCount}
+          setWordCount={(count) => this.setWordCount(count)}
 
           movieListIsLoaded={this.state.movieListIsLoaded}
-
-          handleNoSubtitles={() => this.handleNoSubtitles()}
-          imdbId={this.state.imdbId}
-          moviesWithNoSubtitles={this.state.moviesWithNoSubtitles}
+          isLoaded={this.state.wordDataIsLoaded}
 
           demoMode={this.state.demoMode}
         />
 
         <WordFrequencies
-          getWordData={() => this.getWordData()}
-          wordsRetrieved={this.state.wordsRetrieved}
           wordCount={this.state.wordCount}
 
           isLoaded={this.state.wordDataIsLoaded}

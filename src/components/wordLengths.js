@@ -3,6 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import Chart from 'chart.js/auto'
 
 class WordLengths extends React.Component {
+
   render() {
     const isLoaded = this.props.isLoaded;
     const wordLengths = this.props.wordLengths;

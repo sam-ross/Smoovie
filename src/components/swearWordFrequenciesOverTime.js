@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import Chart from 'chart.js/auto'
 
 class SwearWordFrequenciesOverTime extends React.Component {
+
   componentDidUpdate(prevProps) {
     if ((prevProps.isLoaded === "loading" || prevProps.isLoaded === "waiting") && this.props.isLoaded === "done") {
       if (this.props.demoMode) {

@@ -6,12 +6,6 @@ import { defaults } from "chart.js";
 
 class WordFrequencies extends React.Component {
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.wordsRetrieved !== this.props.wordsRetrieved) {
-      this.props.getWordData();
-    }
-  }
-
   render() {
     const isLoaded = this.props.isLoaded;
     const commonRemoved = this.props.commonRemoved;
@@ -124,7 +118,9 @@ class WordFrequencies extends React.Component {
               <Toggle
                 defaultChecked={this.props.defaultChecked}
                 icons={this.props.icons}
-                onChange={this.props.onChange} />
+                onChange={this.props.onChange}
+                aria-label={"toggle-common-words"}
+              />
             </label>
           </div>
 
