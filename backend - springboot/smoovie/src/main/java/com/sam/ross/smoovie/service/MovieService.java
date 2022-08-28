@@ -11,7 +11,6 @@ import com.sam.ross.smoovie.objects.subtitles.DownloadRequestResponse;
 import com.sam.ross.smoovie.objects.subtitles.LoginResponse;
 import com.sam.ross.smoovie.objects.subtitles.SubtitlesSearchResponse;
 import com.sam.ross.smoovie.objects.words.WordData;
-import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.utils.SubtitleDataExtraction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class MovieService {
         return searchResponse.getResults();
     }
 
-    public WordList getWordList(String imdbId, String apiKey, String username, String password) {
+    public WordData getWordData(String imdbId, String apiKey, String username, String password, int numberOfSections) {
         if (imdbId.length() > 1 && imdbId.charAt(0) == 't' && imdbId.charAt(1) == 't') {
             imdbId = imdbId.substring(2);
         }
@@ -63,10 +62,8 @@ public class MovieService {
         // parse subtitles
         List<String> words = SubtitleDataExtraction.parseSubtitleFile(subtitlesSRT);
 
-        // return subtitles
-        return WordList.builder()
-                .words(words)
-                .build();
+        // formulate WordData and return
+        return SubtitleDataExtraction.formulateWordData(words, numberOfSections);
     }
 
     private String getFileId(String imdbId, String apiKey) {
@@ -143,10 +140,6 @@ public class MovieService {
         }
 
         return responseBody;
-    }
-
-    public WordData getWordData(List<String> words, int numberOfSections) {
-        return SubtitleDataExtraction.formulateWordData(words, numberOfSections);
     }
 
 }

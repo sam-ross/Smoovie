@@ -218,7 +218,6 @@ class Utils {
                 "knobend",
                 "nigg",
                 "penis",
-                "pussy",
                 "shit",
                 "tosser",
                 "wanker",
@@ -235,7 +234,6 @@ class Utils {
                 "butt",
                 "buttplug",
                 "cock",
-                "coon",
                 "crap",
                 "damn",
                 "dammit",
@@ -251,9 +249,7 @@ class Utils {
                 "poop",
                 "prick",
                 "queer",
-                "sex",
                 "slut",
-                "wank",
                 "tit",
                 "tits"
         );

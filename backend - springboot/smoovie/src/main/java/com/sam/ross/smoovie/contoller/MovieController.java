@@ -1,10 +1,8 @@
 package com.sam.ross.smoovie.contoller;
 
-import com.sam.ross.smoovie.exceptions.ServiceProxyException;
 import com.sam.ross.smoovie.objects.IMDbMovie;
 import com.sam.ross.smoovie.objects.IMDbMovieList;
 import com.sam.ross.smoovie.objects.words.WordData;
-import com.sam.ross.smoovie.objects.words.WordList;
 import com.sam.ross.smoovie.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,28 +39,12 @@ public class MovieController {
         return ResponseEntity.ok(IMDbMovieList.builder().movies(movies).build());
     }
 
-    @GetMapping("/words/{imdbId}")
-    public ResponseEntity<WordList> getWordList(@PathVariable String imdbId) {
-        log.info("getWordList endpoint has received a request (controller)");
-        WordList words = service.getWordList(imdbId, apiKeyOpenSubtitles, username, password);
-
-        return ResponseEntity.ok(words);
-    }
-
-    @PostMapping("/words/data")
+    @GetMapping("/words/data/{imdbId}")
     public ResponseEntity<WordData> getWordData(
-            @RequestBody List<String> words,
-            @RequestParam(defaultValue = "19") int numberOfSections
+            @PathVariable String imdbId, @RequestParam(defaultValue = "19") int numberOfSections
     ) {
-        log.info("getWordList endpoint has received a request (controller)");
-        if (words.isEmpty()) {
-            throw ServiceProxyException.builder()
-                    .httpStatus(506)
-                    .message("Unexpected error returned")
-                    .build();
-        }
-
-        WordData wordData = service.getWordData(words, numberOfSections);
+        log.info("getWordData endpoint has received a request (controller)");
+        WordData wordData = service.getWordData(imdbId, apiKeyOpenSubtitles, username, password, numberOfSections);
 
         return ResponseEntity.ok(wordData);
     }

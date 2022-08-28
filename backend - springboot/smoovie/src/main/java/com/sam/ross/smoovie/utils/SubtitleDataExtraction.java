@@ -18,6 +18,7 @@ public class SubtitleDataExtraction {
             HashMap<String, Integer> swearWordFrequencies = getSwearWordFrequencies(words);
             HashMap<String, Integer> swearWordFrequenciesOverTime = getSwearWordFrequenciesOverTime(words,
                     numberOfSections);
+            int wordCount = words.size();
 
             return WordData.builder()
                     .wordFrequencies(wordFrequencies)
@@ -26,6 +27,7 @@ public class SubtitleDataExtraction {
                     .phraseFrequencyRanges(phraseFrequencyRange)
                     .swearWordFrequencies(swearWordFrequencies)
                     .swearWordFrequenciesOverTime(swearWordFrequenciesOverTime)
+                    .wordCount(wordCount)
                     .build();
         } catch (Exception e) {
             throw new GeneralException("Error formulating word data: " + e.getMessage());
@@ -90,10 +92,9 @@ public class SubtitleDataExtraction {
             }
             hm.put(word, value);
         }
-        hm = sortByValue(hm);
 
         if (!removeCommonWords) {
-            return hm;
+            return sortByValue(hm, true);
         }
 
         // if the user wants the stopwords removed (default)
@@ -103,7 +104,7 @@ public class SubtitleDataExtraction {
 
         hmNoStopWords.entrySet().removeIf(k -> stopWords.contains(k.getKey()));
 
-        return hmNoStopWords;
+        return sortByValue(hmNoStopWords, true);
     }
 
     public static HashMap<String, Integer> getWordLengths(List<String> words) {
@@ -118,7 +119,7 @@ public class SubtitleDataExtraction {
             }
             hm.put(lengthString, value);
         }
-        hm = sortByValue(hm);
+        hm = sortByValue(hm, false);
 
         return hm;
     }
@@ -151,7 +152,7 @@ public class SubtitleDataExtraction {
             }
             phr.put(phrase, value);
         }
-        phr = sortByValue(phr);
+        phr = sortByValue(phr, true);
 
         return phr;
     }
@@ -202,7 +203,7 @@ public class SubtitleDataExtraction {
             swr.remove("nigg");
             swr.put("n-word", curr);
         }
-        swr = sortByValue(swr);
+        swr = sortByValue(swr, false);
 
         return swr;
     }
@@ -252,7 +253,7 @@ public class SubtitleDataExtraction {
     }
 
     // method to sort hashmap by values
-    private static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+    private static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm, Boolean limitSizeTo60) {
         // Create a list from elements of HashMap
         List<Map.Entry<String, Integer>> list
                 = new LinkedList<Map.Entry<String, Integer>>(
@@ -264,9 +265,15 @@ public class SubtitleDataExtraction {
                 Comparator.comparing(Map.Entry::getValue));
 
         // put data from sorted list to hashmap
+        int stop = 0;
+
+        if (limitSizeTo60 && list.size() >= 60) {
+            stop = list.size() - 60;
+        }
+
         HashMap<String, Integer> temp
                 = new LinkedHashMap<>();
-        for (int i = list.size() - 1; i >= 0; i--) {
+        for (int i = list.size() - 1; i >= stop; i--) {
             Map.Entry<String, Integer> aa = list.get(i);
             temp.put(aa.getKey(), aa.getValue());
         }

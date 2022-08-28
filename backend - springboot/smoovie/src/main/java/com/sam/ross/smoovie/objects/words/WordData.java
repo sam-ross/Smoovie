@@ -19,4 +19,5 @@ public class WordData {
     private List<PhraseFrequencies> phraseFrequencyRanges;
     private HashMap<String, Integer> swearWordFrequencies;
     private HashMap<String, Integer> swearWordFrequenciesOverTime;
+    private int wordCount;
 }
