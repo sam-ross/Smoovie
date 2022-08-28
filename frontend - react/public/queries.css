@@ -1,0 +1,151 @@
+/*
+  Below 1200px - tablets landscape
+*/
+@media(max-width: 75em) {
+  html {
+    font-size: 50%;
+  }
+
+  .list-movies {
+    flex-wrap: wrap;
+    gap: 1em 2em;
+  }
+
+  .chart-frequencies {
+    height: 1050px;
+  }
+}
+
+/* Below 944px - tablets */
+@media(max-width: 59em) {
+  h1 {
+    font-size: 3.8em;
+  }
+  
+  .list-movies {
+    margin-top: 4em; 
+  }
+
+  .loading-row {
+    height: 4em;
+  }
+
+  .chart-frequencies {
+    height: 950px;
+  }
+}
+
+/* Below 704px - smaller tablets */
+@media(max-width: 44em) {
+  h1 {
+    text-align: center;
+  }
+
+  .chart-circle {
+    width: 35em;
+  }
+}
+
+/* Below 544px - phones */
+@media(max-width: 34em) {
+  html {
+    font-size: 43.75%;
+  }
+
+  input {
+    width: 14em;
+  }
+
+  i {
+    left: -30px;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .chart-circle {
+    width: 30em;
+  }
+
+  #phrase-frequencies-h2 {
+    padding-left: 0.8em;
+  }
+
+  .section-phrase-frequency {
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+  }
+
+  .swear-word-no {
+    font-size: 1.5em;
+  }
+
+  .section-footer {
+    height: 6em;
+  }
+
+  .footer-image {
+    width: 2.5em;
+    height: auto;
+  }
+
+}
+
+/* Below 384px - very narrow */
+@media(max-width: 24em) {
+  h2 {
+    font-size: 1.9em;
+  }
+
+  input {
+    width: 10.5em;
+  }
+
+  .chart-circle {
+    width: 28em;
+  }
+
+  .header-nav {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+  }
+
+  .word-count-outer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .word-count {
+    margin :0;
+  }
+
+  .chart-frequencies {
+    height: 850px;
+  }
+
+  section {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  .header-and-first-section {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  #phrase-frequencies-h2 {
+    padding-left: 0.4em;
+  }
+
+  .section-footer {
+    height: 5em;
+  }
+
+  .footer-image {
+    width: 2em;
+    height: auto;
+  }
+}
+
